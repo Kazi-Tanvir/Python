@@ -1,0 +1,7 @@
+# YouTube Links - Bulk Download
+# Add one URL per line. Lines starting with # are ignored.
+# Supports both video and playlist URLs.
+#
+# Examples:
+# https://www.youtube.com/watch?v=dQw4w9WgXcQ
+# https://www.youtube.com/playlist?list=PLrAXtmErZgOeiKm4sgNOknGvNjby9efdf

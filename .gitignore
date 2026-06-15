@@ -1,0 +1,25 @@
+# Environment
+.env
+.venv/
+
+# Downloads
+01_Downloader/downloads/
+downloads/
+**/downloads/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Instagram sessions
+*.session
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+desktop.ini
+.DS_Store

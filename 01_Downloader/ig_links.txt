@@ -1,0 +1,9 @@
+# Instagram Links - Bulk Download
+# Add one URL or @username per line. Lines starting with # are ignored.
+#
+# Supported formats:
+# https://www.instagram.com/p/ABC123/          (post)
+# https://www.instagram.com/reel/ABC123/       (reel)
+# https://www.instagram.com/stories/username/  (stories)
+# https://www.instagram.com/username/          (profile)
+# @username                                    (profile)

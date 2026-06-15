@@ -1,0 +1,6 @@
+# Facebook Links - Bulk Download
+# Add one Facebook video URL per line. Lines starting with # are ignored.
+#
+# Examples:
+# https://www.facebook.com/watch/?v=123456789
+# https://www.facebook.com/user/videos/123456789

@@ -1,0 +1,6 @@
+yt-dlp
+instaloader
+rich
+python-dotenv
+
+/downloads
