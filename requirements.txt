@@ -3,4 +3,3 @@ instaloader
 rich
 python-dotenv
 
-/downloads
