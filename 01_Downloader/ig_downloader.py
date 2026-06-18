@@ -7,10 +7,31 @@ Supports single URLs, usernames, and bulk downloads from ig_links.txt.
 import os
 import re
 import time
+import threading
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import instaloader
+
+
+class ThreadSafeInstaloader(instaloader.Instaloader):
+    def __init__(self, *args, **kwargs):
+        self._thread_local = threading.local()
+        self._shared_dirname_pattern = kwargs.get("dirname_pattern", "")
+        self._thread_local.dirname_pattern = self._shared_dirname_pattern
+        super().__init__(*args, **kwargs)
+
+    @property
+    def dirname_pattern(self) -> str:
+        if not hasattr(self._thread_local, "dirname_pattern"):
+            return self._shared_dirname_pattern
+        return self._thread_local.dirname_pattern
+
+    @dirname_pattern.setter
+    def dirname_pattern(self, value: str):
+        self._thread_local.dirname_pattern = value
+        self._shared_dirname_pattern = value
+
 
 from rich.table import Table
 from rich.panel import Panel
@@ -91,7 +112,7 @@ def _get_loader(download_dir: Path) -> instaloader.Instaloader:
         _loader_instance.dirname_pattern = str(download_dir / "{target}")
         return _loader_instance
 
-    L = instaloader.Instaloader(
+    L = ThreadSafeInstaloader(
         dirname_pattern=str(download_dir / "{target}"),
         filename_pattern="{date_utc}__{shortcode}",
         download_video_thumbnails=False,
@@ -136,6 +157,7 @@ def _get_loader(download_dir: Path) -> instaloader.Instaloader:
 def _download_post(shortcode: str, download_dir: Path) -> bool:
     """Download a single post or reel by shortcode."""
     L = _get_loader(download_dir)
+    L.dirname_pattern = str(download_dir)
 
     try:
         post = instaloader.Post.from_shortcode(L.context, shortcode)
@@ -167,6 +189,7 @@ def _download_post(shortcode: str, download_dir: Path) -> bool:
 def _download_stories(username: str, download_dir: Path) -> bool:
     """Download all current stories for a user."""
     L = _get_loader(download_dir)
+    L.dirname_pattern = str(download_dir)
 
     ig_user = get_env("IG_USERNAME")
     if not ig_user:
@@ -203,6 +226,7 @@ def _download_stories(username: str, download_dir: Path) -> bool:
 def _download_profile(username: str, download_dir: Path) -> bool:
     """Download all content from a profile (posts, reels, tagged)."""
     L = _get_loader(download_dir)
+    L.dirname_pattern = str(download_dir / "{target}")
 
     try:
         profile = instaloader.Profile.from_username(L.context, username)
@@ -240,7 +264,7 @@ def _download_profile(username: str, download_dir: Path) -> bool:
             if choice in ("2", "3"):
                 # Download stories
                 try:
-                    L.download_stories(userids=[profile.userid])
+                    L.download_stories(userids=[profile.userid], filename_target=username)
                 except Exception as e:
                     print_warning(f"Stories failed: {e}")
 
@@ -258,7 +282,7 @@ def _download_profile(username: str, download_dir: Path) -> bool:
 
             if choice == "4":
                 try:
-                    L.download_stories(userids=[profile.userid])
+                    L.download_stories(userids=[profile.userid], filename_target=username)
                 except Exception as e:
                     print_error(f"Stories failed: {e}")
                     return False
