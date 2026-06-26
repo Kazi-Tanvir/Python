@@ -1,7 +1,7 @@
 """
-Facebook Downloader Module
-Downloads Facebook videos at the highest quality using yt-dlp.
-Supports single URLs and bulk downloads from fb_links.txt.
+X (Twitter) Downloader Module
+Downloads videos from X/Twitter at the highest quality using yt-dlp.
+Supports single URLs and bulk downloads from x_links.txt.
 """
 
 import os
@@ -23,29 +23,34 @@ from rich.progress import (
 )
 from rich.prompt import Prompt
 
-from .utils import (
+from shared.console import (
     console,
     print_banner,
     print_success,
     print_error,
     print_warning,
     print_info,
+)
+from shared.config import PROJECT_ROOT, get_env
+
+from .utils import (
     sanitize_filename,
     get_download_dir,
-    get_downloader_dir,
-    get_config_dir,
     read_links_file,
     check_ffmpeg,
-    get_env,
     get_bulk_workers,
 )
 
 
+def get_config_dir() -> Path:
+    return PROJECT_ROOT / "config"
+
+
 # ---------------------------------------------------------------------------
-# Build yt-dlp options for Facebook (always best quality)
+# Build yt-dlp options for X/Twitter
 # ---------------------------------------------------------------------------
 def _build_ydl_opts(download_dir: Path, progress_hook=None) -> dict:
-    """Build yt-dlp options for Facebook downloads (always HD)."""
+    """Build yt-dlp options for X/Twitter video downloads."""
     opts = {
         "format": "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best",
         "outtmpl": str(download_dir / "%(title)s.%(ext)s"),
@@ -62,13 +67,8 @@ def _build_ydl_opts(download_dir: Path, progress_hook=None) -> dict:
     if ffmpeg:
         opts["ffmpeg_location"] = str(Path(ffmpeg).parent)
     else:
-        # Without FFmpeg, fall back to single-stream best
+        # Without FFmpeg, fall back to best single-stream
         opts["format"] = "best[ext=mp4]/best"
-
-    # Cookies for restricted content
-    cookies_file = get_env("FB_COOKIES_FILE")
-    if cookies_file and Path(cookies_file).exists():
-        opts["cookiefile"] = cookies_file
 
     if progress_hook:
         opts["progress_hooks"] = [progress_hook]
@@ -77,20 +77,25 @@ def _build_ydl_opts(download_dir: Path, progress_hook=None) -> dict:
 
 
 # ---------------------------------------------------------------------------
-# Download a single Facebook video
+# Download a single X/Twitter video
 # ---------------------------------------------------------------------------
 def _download_single(url: str, download_dir: Path) -> bool:
-    """Download a single Facebook video with Rich progress bar."""
+    """Download a single X/Twitter video with Rich progress bar."""
+    if not url.strip():
+        return False
+
     # Extract info first to show title
     try:
         with yt_dlp.YoutubeDL({"quiet": True, "no_warnings": True}) as ydl:
             info = ydl.extract_info(url, download=False)
     except yt_dlp.utils.DownloadError as e:
-        print_error(f"Failed to extract info: {e}")
+        print_error(f"Failed to extract info for {url}: {e}")
         return False
 
-    title = info.get("title", "Facebook Video")
-    print_info(f"Title: {title}")
+    title = info.get("title", "X Video")
+    # Clean up title for logs
+    display_title = title if len(title) <= 50 else title[:47] + "..."
+    print_info(f"Title: {display_title}")
 
     with Progress(
         SpinnerColumn(),
@@ -123,10 +128,10 @@ def _download_single(url: str, download_dir: Path) -> bool:
         try:
             with yt_dlp.YoutubeDL(opts) as ydl:
                 ydl.download([url])
-            print_success(f"Downloaded: {title}")
+            print_success(f"Downloaded: {display_title}")
             return True
         except yt_dlp.utils.DownloadError as e:
-            print_error(f"Download failed: {e}")
+            print_error(f"Download failed for {url}: {e}")
             return False
 
 
@@ -134,34 +139,33 @@ def _download_single(url: str, download_dir: Path) -> bool:
 # Interactive modes
 # ---------------------------------------------------------------------------
 def run_single_download() -> None:
-    """Interactive: download a single Facebook video."""
+    """Interactive: download a single X/Twitter video."""
     console.print()
-    url = Prompt.ask("  Enter Facebook video URL")
+    url = Prompt.ask("  Enter X (Twitter) video URL")
     if not url.strip():
         print_error("No URL provided.")
         return
 
-    download_dir = get_download_dir("facebook")
+    download_dir = get_download_dir("x")
     print_info(f"Saving to: {download_dir}")
-    print_info("Downloading at highest quality (HD)...")
+    print_info("Downloading at highest quality...")
     console.print()
 
     _download_single(url, download_dir)
 
 
 def run_bulk_download() -> None:
-    """Bulk download from fb_links.txt with parallel workers."""
-    links_file = get_config_dir() / "fb_links.txt"
+    """Bulk download from x_links.txt with parallel workers."""
+    links_file = get_config_dir() / "x_links.txt"
     links = read_links_file(links_file)
     if not links:
-        print_error(f"No links found. Add Facebook URLs to: {links_file}")
+        print_error(f"No links found. Add X/Twitter URLs to: {links_file}")
         return
 
-    download_dir = get_download_dir("facebook")
+    download_dir = get_download_dir("x")
     workers = get_bulk_workers()
     print_info(f"Downloading {len(links)} video(s) with {workers} parallel worker(s)")
     print_info(f"Saving to: {download_dir}")
-    print_info("All videos will be downloaded at highest quality (HD).")
     console.print()
 
     success_count = 0
@@ -199,8 +203,8 @@ def run_bulk_download() -> None:
 # Main menu for standalone usage
 # ---------------------------------------------------------------------------
 def run() -> None:
-    """Facebook Downloader interactive menu."""
-    print_banner("FACEBOOK DOWNLOADER", "Download videos from Facebook in HD")
+    """X/Twitter Downloader interactive menu."""
+    print_banner("X (TWITTER) DOWNLOADER", "Download videos from X/Twitter at highest quality")
 
     if not check_ffmpeg():
         print_warning(
@@ -214,9 +218,9 @@ def run() -> None:
         console.print(
             Panel(
                 "[bold cyan]1[/]  Single Video\n"
-                "[bold cyan]2[/]  Bulk Download (fb_links.txt)\n"
+                "[bold cyan]2[/]  Bulk Download (x_links.txt)\n"
                 "[bold cyan]0[/]  Back to Main Menu",
-                title="[bold]Facebook Options[/bold]",
+                title="[bold]X Options[/bold]",
                 border_style="cyan",
                 padding=(1, 3),
             )

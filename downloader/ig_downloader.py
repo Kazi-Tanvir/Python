@@ -47,6 +47,7 @@ from .utils import (
     print_info,
     get_download_dir,
     get_downloader_dir,
+    get_config_dir,
     read_links_file,
     get_env,
     get_bulk_workers,
@@ -361,7 +362,7 @@ def run_single_download() -> None:
 
 def run_bulk_download() -> None:
     """Bulk download from ig_links.txt with parallel workers."""
-    links_file = get_downloader_dir() / "ig_links.txt"
+    links_file = get_config_dir() / "ig_links.txt"
     links = read_links_file(links_file)
     if not links:
         print_error(f"No links found. Add Instagram URLs or @usernames to: {links_file}")

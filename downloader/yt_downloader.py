@@ -35,7 +35,7 @@ from .utils import (
     print_info,
     sanitize_filename,
     get_download_dir,
-    get_downloader_dir,
+    get_config_dir,
     read_links_file,
     check_ffmpeg,
     check_aria2c,
@@ -375,7 +375,7 @@ def run_playlist_download() -> None:
 
 def run_bulk_download() -> None:
     """Bulk download from yt_links.txt with parallel workers."""
-    links_file = get_downloader_dir() / "yt_links.txt"
+    links_file = get_config_dir() / "yt_links.txt"
     links = read_links_file(links_file)
     if not links:
         print_error(f"No links found. Add YouTube URLs to: {links_file}")

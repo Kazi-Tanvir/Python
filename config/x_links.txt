@@ -1,0 +1,9 @@
+# ==============================================================
+# X (Twitter) Video Downloader Link List
+# ==============================================================
+# Add X or Twitter video links here (one per line).
+# Lines starting with '#' and blank lines are ignored.
+#
+# Examples:
+# https://x.com/NASA/status/1679124451000000000
+# https://twitter.com/SpaceX/status/1679124451000000000

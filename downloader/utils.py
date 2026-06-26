@@ -50,6 +50,10 @@ def get_downloader_dir() -> Path:
     return PROJECT_ROOT / "downloader"
 
 
+def get_config_dir() -> Path:
+    return PROJECT_ROOT / "config"
+
+
 def get_download_dir(platform: str) -> Path:
     """
     Return the download directory for a given platform.

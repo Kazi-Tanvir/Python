@@ -16,7 +16,8 @@ A premium, interactive CLI toolkit for media downloading, PDF generation, ebook 
 * **YouTube Downloader**: High-speed, multi-connection video/playlist downloads via `yt-dlp` and `aria2c`.
 * **Facebook Downloader**: Automatically extracts and merges best quality HD streams.
 * **Instagram Downloader**: Story, post, reel, and full profile downloading using `instaloader` with session credentials and rate-limiting.
-* **Bulk Download**: Read links from batch files inside `config/` (`yt_links.txt`, `ig_links.txt`, `fb_links.txt`) and download them in parallel.
+* **X (Twitter) Downloader**: Download high-quality videos from X/Twitter posts.
+* **Bulk Download**: Read links from batch files inside `config/` (`yt_links.txt`, `ig_links.txt`, `fb_links.txt`, `x_links.txt`) and download them in parallel.
 
 ### 3. 📖 Book to README (`pdf_tools/`)
 * Converts heavy PDF books into chapter-wise structured Markdown folders.
@@ -63,6 +64,7 @@ python-toolkit/
 │
 ├── converter/                 # PDF Converters package
 │   ├── __init__.py
+│   ├── main.py                # PDF Converter submenu TUI
 │   ├── cbz_to_pdf.py
 │   └── img_to_pdf.py
 │
@@ -80,7 +82,8 @@ python-toolkit/
 ├── config/                    # Configuration / batch inputs folder
 │   ├── yt_links.txt           # Batch YouTube links
 │   ├── ig_links.txt           # Batch Instagram links/profiles
-│   └── fb_links.txt           # Batch Facebook links
+│   ├── fb_links.txt           # Batch Facebook links
+│   └── x_links.txt            # Batch X/Twitter links
 │
 └── output/                    # Git-ignored directory for all outputs
     ├── downloads/             # Downloaded media files

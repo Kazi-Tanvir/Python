@@ -1,5 +1,5 @@
 """
-Facebook Tuition Media Scraper v1.0
+Facebook Tuition Media Scraper v1.0.0
 ====================================
 Scrapes public "Tuition Media" Facebook pages for tutoring job posts,
 parses structured data using regex, and filters results based on

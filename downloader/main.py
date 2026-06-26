@@ -49,6 +49,12 @@ BUILTIN_DOWNLOADERS = {
         "description": "Download posts, reels, stories, and profiles",
         "builtin": True,
     },
+    "x": {
+        "name": "X (Twitter) Downloader",
+        "module": "downloader.x_downloader",
+        "description": "Download videos from X/Twitter at highest quality",
+        "builtin": True,
+    },
 }
 
 
@@ -249,7 +255,7 @@ def run() -> None:
     banner_text = Text(justify="center")
     banner_text.append("MEDIA DOWNLOADER", style="bold bright_magenta")
     banner_text.append("\n")
-    banner_text.append("v1.0", style="dim")
+    banner_text.append("v1.0.0", style="dim")
     console.print(
         Panel(
             banner_text,
