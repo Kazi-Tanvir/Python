@@ -1,0 +1,482 @@
+{
+  "scraped_at": "2026-06-25T23:28:06.406706",
+  "target_page": [
+    "https://web.facebook.com/groups/634625769494155"
+  ],
+  "total_posts": 19,
+  "best_matches": 0,
+  "good_matches": 7,
+  "results": [
+    {
+      "post_url": "https://web.facebook.com/groups/634625769494155/posts/1021582187465176/?__cft__[0]=AZZsLRQo96PuNG2mX3UO84V5z2uhYw5EZkUEM71KMJ70RJnWv5rFhdmeQgfvNYIqly-XVCfPo8tmnP2gCjqVIBspT9Uob6t9LU5K3gtZmtqySaEf1qQA0L8j1DeEwLnVR6Sk97eqLpyuiFFsaP0kPD88Wx6O1tcCcwZoUNC2qxyDNcTOV2CGkE0GQQyFS_E8WHa-cxf9nwF2UK4gylPonwfW&__tn__=%2CO%2CP-R",
+      "tuition_id": "",
+      "class_standard": "Class 9",
+      "subjects": [
+        "English",
+        "Bangla",
+        "Business Studies"
+      ],
+      "location": "Gulshan",
+      "salary": 0,
+      "salary_raw": "",
+      "gender_required": "Male",
+      "university_required": "",
+      "days_per_week": 4,
+      "medium": "Bangla Medium",
+      "num_students": 1,
+      "match_score": 68.0,
+      "match_tier": "Good",
+      "match_reasons": [
+        "[+] Location: Gulshan",
+        "[+] Class: Class 9",
+        "[?] Salary: unknown (partial credit)",
+        "[+] Gender: Male (you: Male)",
+        "[+] University: no restriction",
+        "[+] Medium: Bangla Medium"
+      ]
+    },
+    {
+      "post_url": "https://web.facebook.com/groups/634625769494155/posts/1021472717476123/?__cft__[0]=AZa0MYx6mTTOOtDVc22gZdQtVNVI5z8i4BIOABgj8tC9GEAirnQEj1YCe6OiL7QLpiWZwsXR10YODJNe0nyvWqwxb4DyuFrjk8x-Vxtp6IGgttb_B3XR7njTPLTKk2H5IiU29EkNxKm4quaZ_puqmEyRnCWFWZpUh6P0r1sdp9w9J65Zl7c4YeIuFZCQURd8u3o&__tn__=%2CO%2CP-R",
+      "tuition_id": "53286",
+      "class_standard": "",
+      "subjects": [
+        "Math"
+      ],
+      "location": "Mirpur",
+      "salary": 0,
+      "salary_raw": "",
+      "gender_required": "Male",
+      "university_required": "DU",
+      "days_per_week": 0,
+      "medium": "",
+      "num_students": 1,
+      "match_score": 56.8,
+      "match_tier": "Good",
+      "match_reasons": [
+        "[+] Location: Mirpur",
+        "[+] Subjects: math",
+        "[?] Salary: unknown (partial credit)",
+        "[+] Gender: Male (you: Male)",
+        "[+] University: DU",
+        "[?] Medium: not specified (partial credit)"
+      ]
+    },
+    {
+      "post_url": "https://web.facebook.com/groups/634625769494155/posts/1021652974124764/?__cft__[0]=AZZYIcCVwEZ1HTp82VgN_TGIOM__9xuOggBdVm76WbA2XVnfiwLAnKZ6iaGOdV77-tTjHraoanjWC2UVLGh5HXXZ-I3pBX86a6cAUpz2KpGvlDfkoffTEtHXln7-I-FaFNZzTVmUVC3u_PbzAFNW8PG3IL9OlsXiQvs5IkpJ0k0lNeHrB4PL8RhV8obSyXXi_1npP2Gz8f_MtjV-Hgw32R06&__tn__=%2CO%2CP-R",
+      "tuition_id": "",
+      "class_standard": "hsc",
+      "subjects": [
+        "Chemistry"
+      ],
+      "location": "",
+      "salary": 0,
+      "salary_raw": "",
+      "gender_required": "Any",
+      "university_required": "Just, DU",
+      "days_per_week": 0,
+      "medium": "",
+      "num_students": 1,
+      "match_score": 54.2,
+      "match_tier": "Good",
+      "match_reasons": [
+        "[?] Location: unknown (partial credit)",
+        "[+] Subjects: chemistry",
+        "[+] Class: hsc",
+        "[?] Salary: unknown (partial credit)",
+        "[+] Gender: Any (you: Male)",
+        "[+] University: Just, DU",
+        "[?] Medium: not specified (partial credit)"
+      ]
+    },
+    {
+      "post_url": "https://web.facebook.com/groups/634625769494155/posts/1021497187473676/?__cft__[0]=AZYzt3vKhCbpyU4Z2unn4_WQaMjmZVa3QxpYLaUgmyJOOnd6d4fMZLp4N7eD0g0q6ftFICF8XhJux-wvibTmOvhz6jITL8JH7fT9xFgKzuAcjjoAKlh9iWeTOUO-jPx3398xAsQpMNEOsXDP9VWIPFfXCfd4y6GHB8S2l_AedWCgpxl61tT3gSz_WAldn9gZ4EI&__tn__=%2CO%2CP-R",
+      "tuition_id": "",
+      "class_standard": "Class 11",
+      "subjects": [
+        "Islam"
+      ],
+      "location": "Uttara",
+      "salary": 0,
+      "salary_raw": "",
+      "gender_required": "Any",
+      "university_required": "",
+      "days_per_week": 0,
+      "medium": "",
+      "num_students": 1,
+      "match_score": 50.5,
+      "match_tier": "Good",
+      "match_reasons": [
+        "[+] Location: Uttara",
+        "[?] Salary: unknown (partial credit)",
+        "[+] Gender: Any (you: Male)",
+        "[+] University: no restriction",
+        "[?] Medium: not specified (partial credit)"
+      ]
+    },
+    {
+      "post_url": "https://web.facebook.com/groups/634625769494155/posts/1021496434140418/?__cft__[0]=AZYslEuk74--o_A2bHPfGBFm7Hd8it8N60oC-x0MSwDgh6DQ_cv5CG9eyRKkMdG6jaaGpW4NpkdWrf26HvB9uVkghCR0n6VFDw4_q93cdD_1kU628pYaN33wjt2slILcttcoOyZvt1MKbMNhrCggFizziZQz526XMOoy33OmB78lCG5ZGo0rs22FKmcDQMxfXOA&__tn__=%2CO%2CP-R",
+      "tuition_id": "",
+      "class_standard": "Class 11",
+      "subjects": [
+        "Islam"
+      ],
+      "location": "Uttara",
+      "salary": 0,
+      "salary_raw": "",
+      "gender_required": "Any",
+      "university_required": "",
+      "days_per_week": 0,
+      "medium": "",
+      "num_students": 1,
+      "match_score": 50.5,
+      "match_tier": "Good",
+      "match_reasons": [
+        "[+] Location: Uttara",
+        "[?] Salary: unknown (partial credit)",
+        "[+] Gender: Any (you: Male)",
+        "[+] University: no restriction",
+        "[?] Medium: not specified (partial credit)"
+      ]
+    },
+    {
+      "post_url": "https://web.facebook.com/groups/634625769494155/posts/1021632170793511/?__cft__[0]=AZZHFdD-nXhVgz5V8428ypHJoDhVCVA2GSMlSTdcbNmbwVXEuSHpELxh0WNFxHgVoaW5MQAIjb2Mb3W7rKNJp747Xd_989aT2bl_fQWUL0H0O7YDX7Gox8STa-Ul2bQTV5mnuoA1qPYULeoAy9w74nmMxNeFaVqleevhQITSRPrl_JiosvsUsHYMvgdTTx4XF7HgRcTEU5UKlzK5EJMZROqd&__tn__=%2CO%2CP-R",
+      "tuition_id": "",
+      "class_standard": "Class 9",
+      "subjects": [],
+      "location": "",
+      "salary": 6000,
+      "salary_raw": "6000 BDT",
+      "gender_required": "Female",
+      "university_required": "DU",
+      "days_per_week": 0,
+      "medium": "",
+      "num_students": 1,
+      "match_score": 45.0,
+      "match_tier": "Good",
+      "match_reasons": [
+        "[?] Location: unknown (partial credit)",
+        "[+] Class: Class 9",
+        "[+] Salary: 6000 BDT (>= 3000)",
+        "[-] Gender: requires Female (you: Male)",
+        "[+] University: DU",
+        "[?] Medium: not specified (partial credit)"
+      ]
+    },
+    {
+      "post_url": "https://web.facebook.com/groups/634625769494155/posts/1021587370797991/?__cft__[0]=AZa7-7mH6gvL8tq9Nc-cmpQqcw7LcAGpOuvr-10xwlzUuvZlYC4bxhygBDNqMy6troU1DGa-y6-rsGXNWOT5OuLkLGOCsEOKlRZkShEpdMXHUeceNBUsUH6ApR5ClrqGpkHecWzTuk1HIY-KqD3nK7hC1Mn3nJaSJ7BYwu8VzLQgfbUK2-MfYsZosqLui0C6dtqHvl-IfTuCaXTJIhqUiWg2&__tn__=%2CO%2CP-R",
+      "tuition_id": "",
+      "class_standard": "Class 10",
+      "subjects": [],
+      "location": "",
+      "salary": 4000,
+      "salary_raw": "4000 BDT",
+      "gender_required": "Female",
+      "university_required": "",
+      "days_per_week": 0,
+      "medium": "",
+      "num_students": 1,
+      "match_score": 45.0,
+      "match_tier": "Good",
+      "match_reasons": [
+        "[?] Location: unknown (partial credit)",
+        "[+] Class: Class 10",
+        "[+] Salary: 4000 BDT (>= 3000)",
+        "[-] Gender: requires Female (you: Male)",
+        "[+] University: no restriction",
+        "[?] Medium: not specified (partial credit)"
+      ]
+    },
+    {
+      "post_url": "https://web.facebook.com/groups/634625769494155/posts/1021519850804743/?__cft__[0]=AZb6h9MSKVL5PLKAII1b18in89UxMlmfYfboiJQGIAmqROFSuX4-TRvH7wPhbpt8N6TLFtYumiVY7857iBNPRdeoOd3l5sb2L3I9O6c3y7XDtDhWrGjbEnqmFE2OvCYeF_QjpThNPxYyiMqim98KJSxj_AE2pYPZPpJadAIJJ5Yii5y9W5ATkjSYAOUIVaf7Vx1ifNlmmnFpiBHBc1f2utMK&__tn__=%2CO%2CP-R",
+      "tuition_id": "",
+      "class_standard": "Class 12",
+      "subjects": [
+        "Chemistry"
+      ],
+      "location": "",
+      "salary": 0,
+      "salary_raw": "",
+      "gender_required": "Male",
+      "university_required": "",
+      "days_per_week": 0,
+      "medium": "",
+      "num_students": 1,
+      "match_score": 39.2,
+      "match_tier": "Low",
+      "match_reasons": [
+        "[?] Location: unknown (partial credit)",
+        "[+] Subjects: chemistry",
+        "[?] Salary: unknown (partial credit)",
+        "[+] Gender: Male (you: Male)",
+        "[+] University: no restriction",
+        "[?] Medium: not specified (partial credit)"
+      ]
+    },
+    {
+      "post_url": "https://web.facebook.com/groups/634625769494155/posts/1021509234139138/?__cft__[0]=AZa9_lrpmBXecXJdLA4cXs06QV65Ra-2qbbGkJifRCrt6ZFGPBLKuJZPtKoRckTJ_1De1uLvucxr85W-UZsTaM9dXaBpxWiQnc57z18N8bDYYXaTjsTdR5LQfezIF7TRC2y4KVwuuhIWboFDHMA9WxSsiW3VC-x9ac4vvpwQyU_96RX2SVzdD91S1xembtJ7YP4&__tn__=%2CO%2CP-R",
+      "tuition_id": "",
+      "class_standard": "",
+      "subjects": [
+        "Physics"
+      ],
+      "location": "",
+      "salary": 0,
+      "salary_raw": "",
+      "gender_required": "Any",
+      "university_required": "",
+      "days_per_week": 0,
+      "medium": "",
+      "num_students": 1,
+      "match_score": 39.2,
+      "match_tier": "Low",
+      "match_reasons": [
+        "[?] Location: unknown (partial credit)",
+        "[+] Subjects: physics",
+        "[?] Salary: unknown (partial credit)",
+        "[+] Gender: Any (you: Male)",
+        "[+] University: no restriction",
+        "[?] Medium: not specified (partial credit)"
+      ]
+    },
+    {
+      "post_url": "https://web.facebook.com/groups/634625769494155/posts/1021468200809908/?__cft__[0]=AZZ3tz1ZQ-s3C7U6vgFK9ovLHmuA7yNwmIIQKg-WXlVLhSvjar_D93r3UqSn-sTemWgpu24EZRW3DNc8eNAckw0pCZcjNNCY_0hpB-USvc5drGpgSGYpTiy5__zMbFtjLeDXZEKAXaoEFuE3bbDCzxiH4ZhbnA0u8qNX-Wz5WGo23GjWFmL8NP590Wa9d7Oja5ix41qfpIWNF6DHOc_zvWRs&__tn__=%2CO%2CP-R",
+      "tuition_id": "",
+      "class_standard": "Class 12",
+      "subjects": [
+        "Chemistry"
+      ],
+      "location": "",
+      "salary": 0,
+      "salary_raw": "",
+      "gender_required": "Male",
+      "university_required": "",
+      "days_per_week": 0,
+      "medium": "",
+      "num_students": 1,
+      "match_score": 39.2,
+      "match_tier": "Low",
+      "match_reasons": [
+        "[?] Location: unknown (partial credit)",
+        "[+] Subjects: chemistry",
+        "[?] Salary: unknown (partial credit)",
+        "[+] Gender: Male (you: Male)",
+        "[+] University: no restriction",
+        "[?] Medium: not specified (partial credit)"
+      ]
+    },
+    {
+      "post_url": "https://web.facebook.com/groups/634625769494155/posts/1021642857459109/?__cft__[0]=AZbno8sE03P3Ro5UTpU5MMRyZmMe8dobUbT__2dBj9ehmvRQGUZGwOn6YSYh75B6iV7tOdBWKfvFuSTDMSFrERI0gmwXxEgk0eqjG-iaJEkhlETkJkaoG7BJTDVpNg_X_QmfZ2VIFO89WZ8faO-nKHJG-4KKEzrNVZmrNXHHKvIC9J4JheLqg9C7P7bW4hCnLSMrf_4oxil2M5NHO_I-c4Ty&__tn__=%2CO%2CP-R",
+      "tuition_id": "1928",
+      "class_standard": "Class 11",
+      "subjects": [],
+      "location": "",
+      "salary": 0,
+      "salary_raw": "",
+      "gender_required": "Male",
+      "university_required": "Du, iut",
+      "days_per_week": 0,
+      "medium": "",
+      "num_students": 1,
+      "match_score": 33.0,
+      "match_tier": "Low",
+      "match_reasons": [
+        "[?] Location: unknown (partial credit)",
+        "[?] Salary: unknown (partial credit)",
+        "[+] Gender: Male (you: Male)",
+        "[+] University: Du, iut",
+        "[?] Medium: not specified (partial credit)"
+      ]
+    },
+    {
+      "post_url": "https://web.facebook.com/groups/634625769494155/posts/1020381057585289/?__cft__[0]=AZZxME3RYYPNcnm5bKpWBkzOt_v4FWSvofSvUlNEbNr7GMcUd8t757lSvXYbC7X4f3iaDTtl-wAb-2AXP9oh-EUjsXHe2L3gD19E41DHzvqGUyXDGpAlLd5fsxQSeargmbfj11Jod15IvuhsWS6w6E0iVnKMXiiRLwFweFWsoclaitQnViz1FFHa-FvC1QqbvtKrYVEhI0vpwEAXj2Q_DKjC&__tn__=%2CO%2CP-R",
+      "tuition_id": "",
+      "class_standard": "",
+      "subjects": [],
+      "location": "",
+      "salary": 0,
+      "salary_raw": "",
+      "gender_required": "Any",
+      "university_required": "",
+      "days_per_week": 0,
+      "medium": "",
+      "num_students": 1,
+      "match_score": 33.0,
+      "match_tier": "Low",
+      "match_reasons": [
+        "[?] Location: unknown (partial credit)",
+        "[?] Salary: unknown (partial credit)",
+        "[+] Gender: Any (you: Male)",
+        "[+] University: no restriction",
+        "[?] Medium: not specified (partial credit)"
+      ]
+    },
+    {
+      "post_url": "https://web.facebook.com/groups/634625769494155/posts/1020381057585289/?comment_id=1021298800826848&__cft__[0]=AZZxME3RYYPNcnm5bKpWBkzOt_v4FWSvofSvUlNEbNr7GMcUd8t757lSvXYbC7X4f3iaDTtl-wAb-2AXP9oh-EUjsXHe2L3gD19E41DHzvqGUyXDGpAlLd5fsxQSeargmbfj11Jod15IvuhsWS6w6E0iVnKMXiiRLwFweFWsoclaitQnViz1FFHa-FvC1QqbvtKrYVEhI0vpwEAXj2Q_DKjC&__tn__=R-R",
+      "tuition_id": "",
+      "class_standard": "",
+      "subjects": [],
+      "location": "",
+      "salary": 0,
+      "salary_raw": "",
+      "gender_required": "Any",
+      "university_required": "",
+      "days_per_week": 0,
+      "medium": "",
+      "num_students": 1,
+      "match_score": 33.0,
+      "match_tier": "Low",
+      "match_reasons": [
+        "[?] Location: unknown (partial credit)",
+        "[?] Salary: unknown (partial credit)",
+        "[+] Gender: Any (you: Male)",
+        "[+] University: no restriction",
+        "[?] Medium: not specified (partial credit)"
+      ]
+    },
+    {
+      "post_url": "https://web.facebook.com/groups/634625769494155/posts/1021576244132437/?__cft__[0]=AZYM8PQgqPq2hQKF6spIXd6ttMPwBnBYkwPyKIaLcSruXPlkYFk1qf_QULxfeIY-yBQTE9qoca1tAlsJ5YXuOaTltalqG3BngLcRZOL9_aololzhW16W53VRGumyLQcwilJlY0Jeg7ZOyUuFD5z8ld_b6cFlyJ7prce7ChSQ907mX3Yurrx77gOcTWwQMrjD8RZQbIBj6VgwSvvvCLQYpYW-&__tn__=%2CO%2CP-R",
+      "tuition_id": "",
+      "class_standard": "",
+      "subjects": [],
+      "location": "",
+      "salary": 0,
+      "salary_raw": "",
+      "gender_required": "Any",
+      "university_required": "BUET, DU",
+      "days_per_week": 0,
+      "medium": "",
+      "num_students": 1,
+      "match_score": 33.0,
+      "match_tier": "Low",
+      "match_reasons": [
+        "[?] Location: unknown (partial credit)",
+        "[?] Salary: unknown (partial credit)",
+        "[+] Gender: Any (you: Male)",
+        "[+] University: BUET, DU",
+        "[?] Medium: not specified (partial credit)"
+      ]
+    },
+    {
+      "post_url": "https://web.facebook.com/groups/634625769494155/posts/1021437760812952/?__cft__[0]=AZasUlgcUw8fH4VAjY9DRy3mmhTISuR9eQX_MbhS4AA19jRdEcqpzJI_uiXeyGyoT9EFH-TN5LQmgSoDUMYv9W9h0lThXJW-C3TS8k369N5bTuNABBsvkF7gsPZaR0DQX_PKQ58Z2hM3N1u1xBjvHZNQVB3ieb5R722XUj7m_Zl_icGKAaJnG2DvFm69ykYqrk84zIgcLSvWJPFoxpaGoVs5&__tn__=%2CO%2CP-R",
+      "tuition_id": "",
+      "class_standard": "Class 9",
+      "subjects": [
+        "English",
+        "Bangla",
+        "Business Studies"
+      ],
+      "location": "Rampura",
+      "salary": 0,
+      "salary_raw": "",
+      "gender_required": "Female",
+      "university_required": "",
+      "days_per_week": 4,
+      "medium": "Bangla Medium",
+      "num_students": 1,
+      "match_score": 33.0,
+      "match_tier": "Low",
+      "match_reasons": [
+        "[+] Class: Class 9",
+        "[?] Salary: unknown (partial credit)",
+        "[-] Gender: requires Female (you: Male)",
+        "[+] University: no restriction",
+        "[+] Medium: Bangla Medium"
+      ]
+    },
+    {
+      "post_url": "https://web.facebook.com/groups/634625769494155/posts/1021619880794740/?__cft__[0]=AZYK_k0XYKQUKZ-WcXoq9sVeOiYtR81-P8Ocw28QmUXvRfj1P6Kjpa96SBkmrsTAfv12gayU0Lnh3ODo1gJnZEVXZrlP2op8iixq4c0B7XXmH_hlUtf2hx_LRfpqROGjNrbLUfErva17UkDCXXvP6v1bYwLdRivAcV1NkGeKCWOM9y_5Prgl345oGA69onzf1m3sA_DBTdGb4URjfaGwMeab&__tn__=%2CO%2CP-R",
+      "tuition_id": "",
+      "class_standard": "Class 9",
+      "subjects": [
+        "English"
+      ],
+      "location": "",
+      "salary": 0,
+      "salary_raw": "",
+      "gender_required": "Female",
+      "university_required": "University",
+      "days_per_week": 4,
+      "medium": "Bangla Medium",
+      "num_students": 1,
+      "match_score": 30.5,
+      "match_tier": "Low",
+      "match_reasons": [
+        "[?] Location: unknown (partial credit)",
+        "[+] Class: Class 9",
+        "[?] Salary: unknown (partial credit)",
+        "[-] Gender: requires Female (you: Male)",
+        "[-] University: requires University",
+        "[+] Medium: Bangla Medium"
+      ]
+    },
+    {
+      "post_url": "https://web.facebook.com/groups/634625769494155/posts/1021491884140873/?__cft__[0]=AZZPAe-IsV5Dzg-Vp37IMlvgKjXKtI4yNAAV7m8PEAQB7ANMZ52xERkGbT-C8rOs_6vaNiBVvN2OL3wbxyjWqMlSGcweyhRoLr1zSd-k_D1wAOaUbCkv_EpzbL7A_9ledV66VXR5maFLQ_f9ChEosCpJewbal-9yUfo0E87zC2t9fG3dAOk-Olu802DCVf89kWg&__tn__=%2CO%2CP-R",
+      "tuition_id": "",
+      "class_standard": "",
+      "subjects": [],
+      "location": "",
+      "salary": 0,
+      "salary_raw": "",
+      "gender_required": "Any",
+      "university_required": "ঢাবি",
+      "days_per_week": 0,
+      "medium": "",
+      "num_students": 1,
+      "match_score": 23.0,
+      "match_tier": "Low",
+      "match_reasons": [
+        "[?] Location: unknown (partial credit)",
+        "[?] Salary: unknown (partial credit)",
+        "[+] Gender: Any (you: Male)",
+        "[-] University: requires ঢাবি",
+        "[?] Medium: not specified (partial credit)"
+      ]
+    },
+    {
+      "post_url": "https://web.facebook.com/groups/634625769494155/posts/1021639350792793/?__cft__[0]=AZYAm6hrmOiXF6y5m4pBPOVhijixpwimZTDFyf-Kp6W3fdJGZfqbCKlX95a_DzXWxUANWjS5LTvrcKdU7bmu5GYDuvKQZP1_0bDHeYheAcjik3ZrYrtd66XMCsZcaaLamKHdlGMQRrsN9rJQC8qbaLxb2Zza3ZbhiqWLEvLGsbiS5BI2cPxk5uN6-rtKHCUP6aoYE4kV6Cysv7Tr1ljZIV6b&__tn__=%2CO%2CP-R",
+      "tuition_id": "",
+      "class_standard": "Class 4",
+      "subjects": [],
+      "location": "মতিঝিল",
+      "salary": 5000,
+      "salary_raw": "5000 BDT",
+      "gender_required": "Female",
+      "university_required": "",
+      "days_per_week": 0,
+      "medium": "",
+      "num_students": 1,
+      "match_score": 22.5,
+      "match_tier": "Low",
+      "match_reasons": [
+        "[+] Salary: 5000 BDT (>= 3000)",
+        "[-] Gender: requires Female (you: Male)",
+        "[+] University: no restriction",
+        "[?] Medium: not specified (partial credit)"
+      ]
+    },
+    {
+      "post_url": "https://web.facebook.com/groups/634625769494155/posts/1021503320806396/?__cft__[0]=AZbhC2yEZ_9_AJHYuh0hMMLIb8aHyoeN3VIskfrI_CWmLVOhk32Tn-0MqkR0UOzzAuSSIzrB18xwP6j2tUcLz81gffcHPjvWrcYYJfJqP7znxNs_dolkxawCGM8OBoaAtXaTJJEHaNeWPvZv9v4PWyPFaTswBRxLIEdTJS5FGaKYD-ThAdbgZvbBIH148mjQp9LSCuAfhO5IVcnt87w-wQre&__tn__=%2CO%2CP-R",
+      "tuition_id": "259",
+      "class_standard": "Class 6",
+      "subjects": [
+        "Bangla"
+      ],
+      "location": "Cantonment",
+      "salary": 0,
+      "salary_raw": "",
+      "gender_required": "Female",
+      "university_required": "",
+      "days_per_week": 0,
+      "medium": "",
+      "num_students": 1,
+      "match_score": 15.5,
+      "match_tier": "Low",
+      "match_reasons": [
+        "[?] Salary: unknown (partial credit)",
+        "[-] Gender: requires Female (you: Male)",
+        "[+] University: no restriction",
+        "[?] Medium: not specified (partial credit)"
+      ]
+    }
+  ]
+}

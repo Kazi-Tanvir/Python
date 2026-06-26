@@ -2,4 +2,8 @@ yt-dlp
 instaloader
 rich
 python-dotenv
+pymupdf
+playwright
+playwright-stealth
+apify-client
 

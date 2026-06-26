@@ -1,0 +1,175 @@
+{
+  "scraped_at": "2026-06-25T23:22:14.968490",
+  "target_page": "https://www.facebook.com/TuitionMediaBD",
+  "total_posts": 6,
+  "best_matches": 5,
+  "good_matches": 1,
+  "results": [
+    {
+      "post_url": "https://www.facebook.com/TuitionMediaBD/posts/12345",
+      "tuition_id": "TM-45231",
+      "class_standard": "Class 10",
+      "subjects": [
+        "Math",
+        "Higher Math"
+      ],
+      "location": "Dhanmondi",
+      "salary": 5000,
+      "salary_raw": "5000 BDT",
+      "gender_required": "Male",
+      "university_required": "BUET, University",
+      "days_per_week": 3,
+      "medium": "English Version",
+      "num_students": 1,
+      "match_score": 87.5,
+      "match_tier": "Best",
+      "match_reasons": [
+        "[+] Location: Dhanmondi",
+        "[+] Subjects: math, higher math",
+        "[+] Class: Class 10",
+        "[+] Salary: 5000 BDT (>= 3000)",
+        "[+] Gender: Male (you: Male)",
+        "[+] University: BUET, University",
+        "[+] Medium: English Version"
+      ]
+    },
+    {
+      "post_url": "https://www.facebook.com/TuitionMediaBD/posts/99887",
+      "tuition_id": "",
+      "class_standard": "Class 9",
+      "subjects": [
+        "All Subjects"
+      ],
+      "location": "Mirpur",
+      "salary": 4000,
+      "salary_raw": "4000 BDT",
+      "gender_required": "Female",
+      "university_required": "",
+      "days_per_week": 4,
+      "medium": "",
+      "num_students": 1,
+      "match_score": 87.5,
+      "match_tier": "Best",
+      "match_reasons": [
+        "[+] Location: Mirpur",
+        "[+] Subjects: All Subjects",
+        "[+] Class: Class 9",
+        "[+] Salary: 4000 BDT (>= 3000)",
+        "[-] Gender: requires Female (you: Male)",
+        "[+] University: no restriction",
+        "[?] Medium: not specified (partial credit)"
+      ]
+    },
+    {
+      "post_url": "https://www.facebook.com/TuitionMediaBD/posts/55443",
+      "tuition_id": "",
+      "class_standard": "HSC",
+      "subjects": [
+        "Physics",
+        "Chemistry"
+      ],
+      "location": "Mohammadpur",
+      "salary": 6000,
+      "salary_raw": "6000 BDT",
+      "gender_required": "Male",
+      "university_required": "BUET, KUET, Engineering",
+      "days_per_week": 3,
+      "medium": "English Version",
+      "num_students": 1,
+      "match_score": 87.5,
+      "match_tier": "Best",
+      "match_reasons": [
+        "[+] Location: Mohammadpur",
+        "[+] Subjects: physics, chemistry",
+        "[+] Class: HSC",
+        "[+] Salary: 6000 BDT (>= 3000)",
+        "[+] Gender: Male (you: Male)",
+        "[+] University: BUET, KUET, Engineering",
+        "[+] Medium: English Version"
+      ]
+    },
+    {
+      "post_url": "https://www.facebook.com/TuitionMediaBD/posts/11223",
+      "tuition_id": "TM-11223",
+      "class_standard": "O-Level",
+      "subjects": [
+        "Physics",
+        "Chemistry"
+      ],
+      "location": "Uttara",
+      "salary": 0,
+      "salary_raw": "Negotiable",
+      "gender_required": "Any",
+      "university_required": "DU, BUET",
+      "days_per_week": 3,
+      "medium": "English Medium",
+      "num_students": 1,
+      "match_score": 82.5,
+      "match_tier": "Best",
+      "match_reasons": [
+        "[+] Location: Uttara",
+        "[+] Subjects: physics, chemistry",
+        "[+] Class: O-Level",
+        "[?] Salary: Negotiable (partial credit)",
+        "[+] Gender: Any (you: Male)",
+        "[+] University: DU, BUET",
+        "[+] Medium: English Medium"
+      ]
+    },
+    {
+      "post_url": "https://www.facebook.com/TuitionMediaBD/posts/77665",
+      "tuition_id": "",
+      "class_standard": "A-Level",
+      "subjects": [
+        "Math",
+        "Physics"
+      ],
+      "location": "Banani",
+      "salary": 12000,
+      "salary_raw": "12000 BDT",
+      "gender_required": "Any",
+      "university_required": "BUET",
+      "days_per_week": 0,
+      "medium": "Cambridge",
+      "num_students": 1,
+      "match_score": 82.5,
+      "match_tier": "Best",
+      "match_reasons": [
+        "[+] Location: Banani",
+        "[+] Subjects: math, physics",
+        "[+] Class: A-Level",
+        "[+] Salary: 12000 BDT (>= 3000)",
+        "[+] Gender: Any (you: Male)",
+        "[+] University: BUET"
+      ]
+    },
+    {
+      "post_url": "https://www.facebook.com/TuitionMediaBD/posts/67890",
+      "tuition_id": "67890",
+      "class_standard": "Class 8",
+      "subjects": [
+        "English",
+        "Bangla",
+        "Science"
+      ],
+      "location": "Gulshan",
+      "salary": 8000,
+      "salary_raw": "8000 BDT",
+      "gender_required": "Female",
+      "university_required": "",
+      "days_per_week": 5,
+      "medium": "Bangla Medium",
+      "num_students": 1,
+      "match_score": 65.0,
+      "match_tier": "Good",
+      "match_reasons": [
+        "[+] Location: Gulshan",
+        "[+] Class: Class 8",
+        "[+] Salary: 8000 BDT (>= 3000)",
+        "[-] Gender: requires Female (you: Male)",
+        "[+] University: no restriction",
+        "[+] Medium: Bangla Medium"
+      ]
+    }
+  ]
+}

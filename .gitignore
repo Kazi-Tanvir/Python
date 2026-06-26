@@ -6,6 +6,7 @@
 01_Downloader/downloads/
 downloads/
 **/downloads/
+02_PDF/book
 
 # Python
 __pycache__/
