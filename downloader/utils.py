@@ -1,75 +1,27 @@
 """
 Shared utilities for the Media Downloader suite.
-Provides sanitization, Rich helpers, file readers, and environment helpers.
+Provides sanitization, file readers, path helpers, and environment helpers.
+
+Console/theme helpers are imported from shared.console (single source of truth).
 """
 
 import os
 import re
-import sys
 import shutil
 from pathlib import Path
 
-from dotenv import load_dotenv
-from rich.console import Console
-from rich.panel import Panel
-from rich.text import Text
 from rich.table import Table
-from rich.theme import Theme
 
-# ---------------------------------------------------------------------------
-# Load .env from project root (98_PYTHON)
-# ---------------------------------------------------------------------------
-_PROJECT_ROOT = Path(__file__).resolve().parent.parent
-load_dotenv(_PROJECT_ROOT / ".env")
-
-# ---------------------------------------------------------------------------
-# Rich Theme & Console
-# ---------------------------------------------------------------------------
-CUSTOM_THEME = Theme({
-    "info": "cyan",
-    "success": "bold green",
-    "warning": "bold yellow",
-    "error": "bold red",
-    "title": "bold magenta",
-    "subtitle": "dim white",
-    "highlight": "bold cyan",
-    "muted": "dim",
-})
-
-console = Console(theme=CUSTOM_THEME)
-
-
-# ---------------------------------------------------------------------------
-# Styled output helpers
-# ---------------------------------------------------------------------------
-def print_banner(title: str, subtitle: str = "") -> None:
-    """Print a styled banner panel."""
-    content = Text(title, style="title", justify="center")
-    if subtitle:
-        content.append(f"\n{subtitle}", style="subtitle")
-    console.print(
-        Panel(
-            content,
-            border_style="bright_magenta",
-            padding=(1, 4),
-        )
-    )
-
-
-def print_success(msg: str) -> None:
-    console.print(f"  [success][+][/success] {msg}")
-
-
-def print_error(msg: str) -> None:
-    console.print(f"  [error][!][/error] {msg}")
-
-
-def print_warning(msg: str) -> None:
-    console.print(f"  [warning][*][/warning] {msg}")
-
-
-def print_info(msg: str) -> None:
-    console.print(f"  [info][>][/info] {msg}")
+# Import from shared package (single source of truth)
+from shared.console import (
+    console,
+    print_banner,
+    print_success,
+    print_error,
+    print_warning,
+    print_info,
+)
+from shared.config import PROJECT_ROOT, get_env
 
 
 # ---------------------------------------------------------------------------
@@ -91,23 +43,23 @@ def sanitize_filename(name: str, max_length: int = 200) -> str:
 # Directory helpers
 # ---------------------------------------------------------------------------
 def get_project_root() -> Path:
-    return _PROJECT_ROOT
+    return PROJECT_ROOT
 
 
 def get_downloader_dir() -> Path:
-    return _PROJECT_ROOT / "01_Downloader"
+    return PROJECT_ROOT / "downloader"
 
 
 def get_download_dir(platform: str) -> Path:
     """
     Return the download directory for a given platform.
-    Uses DOWNLOAD_DIR from .env if set, else defaults to 01_Downloader/downloads/<platform>/.
+    Uses DOWNLOAD_DIR from .env if set, else defaults to output/downloads/<platform>/.
     """
     base = os.getenv("DOWNLOAD_DIR", "").strip()
     if base:
         path = Path(base) / platform
     else:
-        path = get_downloader_dir() / "downloads" / platform
+        path = PROJECT_ROOT / "output" / "downloads" / platform
     path.mkdir(parents=True, exist_ok=True)
     return path
 
@@ -187,14 +139,6 @@ def get_bulk_workers() -> int:
 
 
 # ---------------------------------------------------------------------------
-# Environment helper
-# ---------------------------------------------------------------------------
-def get_env(key: str, default: str = "") -> str:
-    """Get an environment variable, with a default."""
-    return os.getenv(key, default).strip()
-
-
-# ---------------------------------------------------------------------------
 # Status display
 # ---------------------------------------------------------------------------
 def show_system_status() -> None:
@@ -239,7 +183,7 @@ def show_system_status() -> None:
         table.add_row("FB Cookies", "[yellow]Not Set[/yellow]", "Private videos unavailable")
 
     # Download directory
-    dl_dir = get_env("DOWNLOAD_DIR") or str(get_downloader_dir() / "downloads")
+    dl_dir = get_env("DOWNLOAD_DIR") or str(PROJECT_ROOT / "output" / "downloads")
     table.add_row("Download Dir", "[green]Set[/green]", dl_dir)
 
     # Bulk workers

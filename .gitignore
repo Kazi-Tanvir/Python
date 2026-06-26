@@ -2,25 +2,29 @@
 .env
 .venv/
 
-# Downloads
-01_Downloader/downloads/
-downloads/
-**/downloads/
-02_PDF/book
-
-# Python
+# Python caching
 __pycache__/
 *.pyc
 *.pyo
 
-# Instagram sessions
+# Session & Credentials files
 *.session
+*.cookies
 
-# IDE
+# Output & Generated Data
+output/
+downloads/
+**/downloads/
+*.pdf
+
+# Scratch / Work directories
+scratch/
+
+# IDE / Editor configuration
 .vscode/
 .idea/
 
-# OS
+# OS-generated files
 Thumbs.db
 desktop.ini
 .DS_Store

@@ -205,7 +205,7 @@ def run() -> None:
         print_warning(
             "FFmpeg not found. Videos may download without audio or at lower quality."
         )
-        print_info("See 01_Downloader/FFMPEG_SETUP.md for installation instructions.")
+        print_info("See downloader/FFMPEG_SETUP.md for installation instructions.")
         console.print()
 
     while True:

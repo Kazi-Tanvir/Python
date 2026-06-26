@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "python-toolkit"
+version = "1.0.0"
+description = "A general-purpose CLI script launcher and automation utility suite."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = [
+    "yt-dlp>=2024.0.0",
+    "instaloader>=4.10",
+    "rich>=13.0",
+    "python-dotenv>=1.0",
+    "pymupdf>=1.24",
+    "playwright>=1.40",
+    "playwright-stealth>=1.0",
+    "apify-client>=1.5",
+    "Pillow>=10.0",
+]
+
+[project.scripts]
+toolkit = "main:main"

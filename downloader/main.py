@@ -1,78 +1,51 @@
 """
-Media Downloader v1.0
+Media Downloader Submenu
 Centralized entry point for YouTube, Facebook, and Instagram downloaders.
 Supports a plugin system for registering custom downloaders.
 """
 
-import os
-import sys
 import json
 import importlib
-import importlib.util
 from pathlib import Path
 
-# Ensure project root is on sys.path for imports
-PROJECT_ROOT = Path(__file__).resolve().parent
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT))
+from shared.console import (
+    console,
+    print_banner,
+    print_success,
+    print_error,
+    print_warning,
+    print_info,
+)
+from shared.config import PROJECT_ROOT
+import downloader.utils as dl_utils
 
-from dotenv import load_dotenv
-
-load_dotenv(PROJECT_ROOT / ".env")
-
-# ---------------------------------------------------------------------------
-# Register 01_Downloader as an importable package.
-# Python module names can't start with digits, so we load the package
-# manually via importlib and register it under the alias "_01_Downloader".
-# This allows all relative imports inside the sub-modules to work.
-# ---------------------------------------------------------------------------
-_PKG_DIR = PROJECT_ROOT / "01_Downloader"
-_PKG_INIT = _PKG_DIR / "__init__.py"
-_PKG_ALIAS = "_01_Downloader"
-
-if _PKG_ALIAS not in sys.modules:
-    spec = importlib.util.spec_from_file_location(
-        _PKG_ALIAS, str(_PKG_INIT),
-        submodule_search_locations=[str(_PKG_DIR)],
-    )
-    pkg = importlib.util.module_from_spec(spec)
-    sys.modules[_PKG_ALIAS] = pkg
-    spec.loader.exec_module(pkg)
-
-from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 from rich.prompt import Prompt
-from rich.theme import Theme
-
-import _01_Downloader.utils as dl_utils
-
-# Re-use the shared console
-console = dl_utils.console
 
 # ---------------------------------------------------------------------------
 # Plugin Registry
 # ---------------------------------------------------------------------------
-PLUGINS_FILE = PROJECT_ROOT / "01_Downloader" / "plugins.json"
+PLUGINS_FILE = PROJECT_ROOT / "downloader" / "plugins.json"
 
-# Built-in downloaders (always available)
+# Built-in downloaders
 BUILTIN_DOWNLOADERS = {
     "youtube": {
         "name": "YouTube Downloader",
-        "module": "_01_Downloader.yt_downloader",
+        "module": "downloader.yt_downloader",
         "description": "Download videos and playlists from YouTube",
         "builtin": True,
     },
     "facebook": {
         "name": "Facebook Downloader",
-        "module": "_01_Downloader.fb_downloader",
+        "module": "downloader.fb_downloader",
         "description": "Download videos from Facebook in HD",
         "builtin": True,
     },
     "instagram": {
         "name": "Instagram Downloader",
-        "module": "_01_Downloader.ig_downloader",
+        "module": "downloader.ig_downloader",
         "description": "Download posts, reels, stories, and profiles",
         "builtin": True,
     },
@@ -91,7 +64,7 @@ def _load_plugins() -> dict:
                 entry["builtin"] = False
                 plugins[key] = entry
         except (json.JSONDecodeError, KeyError) as e:
-            dl_utils.print_warning(f"Failed to load plugins.json: {e}")
+            print_warning(f"Failed to load plugins.json: {e}")
 
     return plugins
 
@@ -107,25 +80,22 @@ def _run_downloader(entry: dict) -> None:
     """Dynamically import and run a downloader module."""
     module_path = entry["module"]
     try:
-        import importlib
         mod = importlib.import_module(module_path)
+        importlib.reload(mod)
         if hasattr(mod, "run"):
             mod.run()
         else:
-            dl_utils.print_error(f"Module '{module_path}' has no run() function.")
+            print_error(f"Module '{module_path}' has no run() function.")
     except ImportError as e:
-        dl_utils.print_error(f"Could not import '{module_path}': {e}")
+        print_error(f"Could not import '{module_path}': {e}")
     except Exception as e:
-        dl_utils.print_error(f"Error running '{entry['name']}': {e}")
+        print_error(f"Error running '{entry['name']}': {e}")
 
 
-# ---------------------------------------------------------------------------
-# Plugin management UI
-# ---------------------------------------------------------------------------
 def _add_plugin(plugins: dict) -> None:
     """Interactively add a new custom downloader plugin."""
     console.print()
-    dl_utils.print_info("Register a new downloader plugin")
+    print_info("Register a new downloader plugin")
     console.print()
     console.print(
         Panel(
@@ -133,7 +103,7 @@ def _add_plugin(plugins: dict) -> None:
             "  1. A short key (e.g. 'twitter', 'tiktok')\n"
             "  2. A display name (e.g. 'Twitter/X Downloader')\n"
             "  3. The Python module path relative to 98_PYTHON/\n"
-            "     (e.g. '01_Downloader.x_downloader')\n"
+            "     (e.g. 'downloader.x_downloader')\n"
             "  4. Your module must have a run() function as entry point",
             title="[bold]Plugin Requirements[/bold]",
             border_style="dim",
@@ -144,54 +114,42 @@ def _add_plugin(plugins: dict) -> None:
 
     key = Prompt.ask("  Plugin key (short, lowercase)").strip().lower()
     if not key:
-        dl_utils.print_error("Key cannot be empty.")
+        print_error("Key cannot be empty.")
         return
     if key in plugins:
-        dl_utils.print_error(f"Key '{key}' already exists.")
+        print_error(f"Key '{key}' already exists.")
         return
 
     name = Prompt.ask("  Display name").strip()
     if not name:
-        dl_utils.print_error("Name cannot be empty.")
+        print_error("Name cannot be empty.")
         return
 
-    module = Prompt.ask("  Module path (e.g. 01_Downloader.x_downloader)").strip()
+    module = Prompt.ask("  Module path (e.g. downloader.x_downloader)").strip()
     if not module:
-        dl_utils.print_error("Module path cannot be empty.")
+        print_error("Module path cannot be empty.")
         return
-
-    # Fix module path: replace folder names that start with digits
-    # Python modules can't start with digits, we use _ prefix convention
-    module_fixed = module
-    parts = module.split(".")
-    fixed_parts = []
-    for part in parts:
-        if part and part[0].isdigit():
-            fixed_parts.append(f"_{part}")
-        else:
-            fixed_parts.append(part)
-    module_fixed = ".".join(fixed_parts)
 
     description = Prompt.ask("  Description (optional)", default="Custom downloader").strip()
 
     plugins[key] = {
         "name": name,
-        "module": module_fixed,
+        "module": module,
         "description": description,
         "builtin": False,
     }
 
     _save_custom_plugins(plugins)
-    dl_utils.print_success(f"Plugin '{name}' registered with key '{key}'.")
-    dl_utils.print_info(f"Module path: {module_fixed}")
-    dl_utils.print_info("Make sure the module exists and has a run() function.")
+    print_success(f"Plugin '{name}' registered with key '{key}'.")
+    print_info(f"Module path: {module}")
+    print_info("Make sure the module exists and has a run() function.")
 
 
 def _remove_plugin(plugins: dict) -> None:
     """Remove a custom plugin."""
     custom = {k: v for k, v in plugins.items() if not v.get("builtin", False)}
     if not custom:
-        dl_utils.print_warning("No custom plugins to remove.")
+        print_warning("No custom plugins to remove.")
         return
 
     console.print()
@@ -210,9 +168,9 @@ def _remove_plugin(plugins: dict) -> None:
     if key in custom:
         del plugins[key]
         _save_custom_plugins(plugins)
-        dl_utils.print_success(f"Removed plugin '{key}'.")
+        print_success(f"Removed plugin '{key}'.")
     else:
-        dl_utils.print_error(f"Plugin '{key}' not found.")
+        print_error(f"Plugin '{key}' not found.")
 
 
 def _list_plugins(plugins: dict) -> None:
@@ -232,9 +190,6 @@ def _list_plugins(plugins: dict) -> None:
     console.print(table)
 
 
-# ---------------------------------------------------------------------------
-# Settings menu
-# ---------------------------------------------------------------------------
 def _settings_menu(plugins: dict) -> None:
     """Settings and system status submenu."""
     while True:
@@ -266,35 +221,28 @@ def _settings_menu(plugins: dict) -> None:
             _remove_plugin(plugins)
 
 
-# ---------------------------------------------------------------------------
-# Bulk download all
-# ---------------------------------------------------------------------------
 def _run_bulk_all() -> None:
     """Run bulk download for all three built-in downloaders."""
-    dl_utils.print_info("Running bulk download for all platforms...")
+    print_info("Running bulk download for all platforms...")
     console.print()
 
     for key, entry in BUILTIN_DOWNLOADERS.items():
         console.rule(f"[bold cyan]{entry['name']}[/bold cyan]", style="bright_magenta")
         try:
-            import importlib
             mod = importlib.import_module(entry["module"])
             if hasattr(mod, "run_bulk_download"):
                 mod.run_bulk_download()
             else:
-                dl_utils.print_warning(f"{entry['name']} has no bulk download function.")
+                print_warning(f"{entry['name']} has no bulk download function.")
         except ImportError as e:
-            dl_utils.print_error(f"Could not import {entry['module']}: {e}")
+            print_error(f"Could not import {entry['module']}: {e}")
         except Exception as e:
-            dl_utils.print_error(f"Error in {entry['name']}: {e}")
+            print_error(f"Error in {entry['name']}: {e}")
         console.print()
 
 
-# ---------------------------------------------------------------------------
-# Main menu
-# ---------------------------------------------------------------------------
-def main() -> None:
-    """Main interactive menu."""
+def run() -> None:
+    """Main interactive menu for Media Downloader."""
     plugins = _load_plugins()
 
     # Banner
@@ -346,7 +294,7 @@ def main() -> None:
 
         if choice == "0":
             console.print()
-            dl_utils.print_info("Goodbye!")
+            print_info("Returning to main toolkit...")
             break
         elif choice == bulk_key:
             _run_bulk_all()
@@ -362,5 +310,10 @@ def main() -> None:
                     break
 
 
+def main() -> None:
+    """Alternative entry point."""
+    run()
+
+
 if __name__ == "__main__":
-    main()
+    run()

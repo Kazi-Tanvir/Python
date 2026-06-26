@@ -34,35 +34,36 @@ except ImportError:
     print("[ERROR] PyMuPDF not installed. Run: pip install pymupdf")
     sys.exit(1)
 
-try:
-    from rich.console import Console
-    from rich.panel import Panel
-    from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskProgressColumn
-    from rich.prompt import Prompt
-    from rich.table import Table
-    from rich import print as rprint
-    RICH = True
-except ImportError:
-    RICH = False
+from shared.console import (
+    console,
+    print_banner,
+    print_success,
+    print_error,
+    print_warning,
+    print_info,
+)
+from shared.config import PROJECT_ROOT
+
+from rich.panel import Panel
+from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskProgressColumn
+from rich.prompt import Prompt
+from rich.table import Table
+
+RICH = True
 
 # ─────────────────────────────────────────────────────────────────────────────
 # CONFIG
 # ─────────────────────────────────────────────────────────────────────────────
 
-BOOKS_DIR = Path(__file__).parent / "02_PDF" / "book"
-OUTPUT_BASE = BOOKS_DIR  # output folders go inside 02_PDF/book/<BookName>/
-
-console = Console() if RICH else None
+BOOKS_DIR = PROJECT_ROOT / "output" / "books"
+OUTPUT_BASE = BOOKS_DIR  # output folders go inside output/books/<BookName>/
 
 # ─────────────────────────────────────────────────────────────────────────────
 # HELPERS
 # ─────────────────────────────────────────────────────────────────────────────
 
 def log(msg: str, style: str = ""):
-    if RICH:
-        console.print(msg, style=style)
-    else:
-        print(msg)
+    console.print(msg, style=style)
 
 
 def sanitize_filename(name: str) -> str:
@@ -297,12 +298,12 @@ def list_available_books() -> list[Path]:
     return sorted(BOOKS_DIR.glob("*.pdf"))
 
 
-def pick_book() -> Path:
+def pick_book() -> Path | None:
     """Prompt user to select a book by name or number."""
     pdfs = list_available_books()
     if not pdfs:
         log(f"[red]No PDF files found in {BOOKS_DIR}[/red]")
-        sys.exit(1)
+        return None
 
     if RICH:
         table = Table(title="Available Books", style="cyan", header_style="bold magenta")
@@ -332,7 +333,7 @@ def pick_book() -> Path:
             return pdfs[idx]
         else:
             log("[red]Invalid number.[/red]")
-            sys.exit(1)
+            return None
 
     # Name match (partial, case-insensitive)
     choice_lower = choice.lower()
@@ -344,10 +345,10 @@ def pick_book() -> Path:
         for m in matches:
             log(f"  {m.name}")
         log("[red]Please be more specific.[/red]")
-        sys.exit(1)
+        return None
     else:
         log(f"[red]No book matching '{choice}' found.[/red]")
-        sys.exit(1)
+        return None
 
 
 def convert_book(pdf_path: Path):
@@ -378,7 +379,7 @@ def convert_book(pdf_path: Path):
     chapters = group_into_chapters(toc, total_pages)
     if not chapters:
         log("[red]Could not determine chapters. Aborting.[/red]")
-        sys.exit(1)
+        return
 
     log(f"[bold]  Chapters detected: {len(chapters)}[/bold]")
 
@@ -470,16 +471,20 @@ def _fake_toc_from_pages(total_pages: int, chunk: int = 30) -> list:
     return toc
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-
-if __name__ == "__main__":
-    if RICH:
-        console.print(Panel(
-            "[bold magenta]Book -> README Converter[/bold magenta]\n"
-            "[dim]Converts PDF books into chapter-wise Markdown files[/dim]",
-            expand=False,
-        ))
-        console.print()
+def run():
+    # Make sure output/books directory exists
+    BOOKS_DIR.mkdir(parents=True, exist_ok=True)
+    console.print(Panel(
+        "[bold magenta]Book -> README Converter[/bold magenta]\n"
+        "[dim]Converts PDF books into chapter-wise Markdown files[/dim]",
+        expand=False,
+    ))
+    console.print()
 
     pdf_path = pick_book()
-    convert_book(pdf_path)
+    if pdf_path:
+        convert_book(pdf_path)
+
+
+if __name__ == "__main__":
+    run()

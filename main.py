@@ -13,7 +13,6 @@ import os
 import sys
 import json
 import importlib
-import importlib.util
 from pathlib import Path
 
 # ---------------------------------------------------------------------------
@@ -23,80 +22,27 @@ PROJECT_ROOT = Path(__file__).resolve().parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from dotenv import load_dotenv
+# Import from shared package (single source of truth)
+from shared.console import (
+    console,
+    print_banner,
+    print_success,
+    print_error,
+    print_warning,
+    print_info,
+)
+from shared.config import get_env
 
-load_dotenv(PROJECT_ROOT / ".env")
-
-# ---------------------------------------------------------------------------
-# Register digit-prefixed directories as importable Python packages.
-# Python module names can't start with digits, so we load each package
-# manually via importlib and register it under an "_" prefixed alias.
-#
-# Currently handles:
-#   01_Downloader  → _01_Downloader
-#   99_MISCElLLANEOUS → _99_MISCElLLANEOUS
-# ---------------------------------------------------------------------------
-_DIGIT_DIRS = [
-    ("01_Downloader", "_01_Downloader"),
-    ("03_Converter", "_03_Converter"),
-    ("99_MISCElLLANEOUS", "_99_MISCElLLANEOUS"),
-]
-
-for folder_name, alias in _DIGIT_DIRS:
-    pkg_dir = PROJECT_ROOT / folder_name
-    pkg_init = pkg_dir / "__init__.py"
-    if alias not in sys.modules and pkg_init.exists():
-        spec = importlib.util.spec_from_file_location(
-            alias,
-            str(pkg_init),
-            submodule_search_locations=[str(pkg_dir)],
-        )
-        pkg = importlib.util.module_from_spec(spec)
-        sys.modules[alias] = pkg
-        spec.loader.exec_module(pkg)
-
-from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 from rich.prompt import Prompt
-from rich.theme import Theme
 
-# ---------------------------------------------------------------------------
-# Rich Theme & Console  (consistent with project style)
-# ---------------------------------------------------------------------------
-CUSTOM_THEME = Theme({
-    "info": "cyan",
-    "success": "bold green",
-    "warning": "bold yellow",
-    "error": "bold red",
-    "title": "bold magenta",
-    "subtitle": "dim white",
-    "highlight": "bold cyan",
-    "muted": "dim",
-})
-
-console = Console(theme=CUSTOM_THEME)
-
-
-# ---------------------------------------------------------------------------
-# Styled output helpers
-# ---------------------------------------------------------------------------
-def _print_success(msg: str) -> None:
-    console.print(f"  [success][+][/success] {msg}")
-
-
-def _print_error(msg: str) -> None:
-    console.print(f"  [error][!][/error] {msg}")
-
-
-def _print_warning(msg: str) -> None:
-    console.print(f"  [warning][*][/warning] {msg}")
-
-
-def _print_info(msg: str) -> None:
-    console.print(f"  [info][>][/info] {msg}")
-
+# Map underscore names to shared ones for main.py internal calls
+_print_success = print_success
+_print_error = print_error
+_print_warning = print_warning
+_print_info = print_info
 
 # ---------------------------------------------------------------------------
 # Script Registry
@@ -106,42 +52,42 @@ SCRIPTS_FILE = PROJECT_ROOT / "scripts.json"
 # Built-in scripts (always available)
 # Each entry must have:
 #   - name:        Human-readable name shown in the menu
-#   - module:      Importable Python module path (use _XX prefix for digit dirs)
+#   - module:      Importable Python module path
 #   - description: Short description shown in settings
 #   - entry:       Entry-point function name (default: "run")
 #   - builtin:     True for built-in, False for user-added
 BUILTIN_SCRIPTS = {
     "downloader": {
         "name": "Media Downloader",
-        "module": "downloader",
+        "module": "downloader.main",
         "description": "Download videos from YouTube, Facebook & Instagram",
-        "entry": "main",
+        "entry": "run",
         "builtin": True,
     },
     "book_to_readme": {
         "name": "Book to README",
-        "module": "book_to_readme",
+        "module": "pdf_tools.book_to_readme",
         "description": "Convert PDF book chapters to structured Markdown",
-        "entry": "main",
+        "entry": "run",
         "builtin": True,
     },
     "fb_scraper": {
         "name": "Facebook Tuition Scraper",
-        "module": "_99_MISCElLLANEOUS.facebook_web_scraper",
+        "module": "scraper.facebook_web_scraper",
         "description": "Scrape & filter tutoring jobs from Facebook pages",
         "entry": "run",
         "builtin": True,
     },
     "cbz_to_pdf": {
         "name": "CBZ -> PDF Converter",
-        "module": "_03_Converter.cbz_to_pdf",
+        "module": "converter.cbz_to_pdf",
         "description": "Convert comic book archives (.cbz) to PDF",
         "entry": "run",
         "builtin": True,
     },
     "img_to_pdf": {
         "name": "Image -> PDF Converter",
-        "module": "_03_Converter.img_to_pdf",
+        "module": "converter.img_to_pdf",
         "description": "Convert a directory of images (PNG, JPG, etc.) into a single PDF",
         "entry": "run",
         "builtin": True,
@@ -218,8 +164,7 @@ def _add_script(scripts: dict) -> None:
             "  1. A short key (e.g. 'web_scraper', 'data_cleaner')\n"
             "  2. A display name (e.g. 'Web Scraper Tool')\n"
             "  3. The Python module path relative to 98_PYTHON/\n"
-            "     (e.g. '99_MISCElLLANEOUS.my_script')\n"
-            "     Note: digit-prefixed folders use _ prefix → _99_MISCElLLANEOUS\n"
+            "     (e.g. 'scraper.my_script' or 'misc.my_script')\n"
             "  4. The entry-point function name (default: 'run')\n"
             "  5. Your module must have the entry function as its main logic",
             title="[bold]Script Requirements[/bold]",
@@ -242,27 +187,17 @@ def _add_script(scripts: dict) -> None:
         _print_error("Name cannot be empty.")
         return
 
-    module = Prompt.ask("  Module path (e.g. _99_MISCElLLANEOUS.my_script)").strip()
+    module = Prompt.ask("  Module path (e.g. scraper.my_script)").strip()
     if not module:
         _print_error("Module path cannot be empty.")
         return
-
-    # Auto-fix: replace digit-prefixed segments with _ prefix
-    parts = module.split(".")
-    fixed_parts = []
-    for part in parts:
-        if part and part[0].isdigit():
-            fixed_parts.append(f"_{part}")
-        else:
-            fixed_parts.append(part)
-    module_fixed = ".".join(fixed_parts)
 
     func_name = Prompt.ask("  Entry function name", default="run").strip()
     description = Prompt.ask("  Description (optional)", default="Custom script").strip()
 
     scripts[key] = {
         "name": name,
-        "module": module_fixed,
+        "module": module,
         "description": description,
         "entry": func_name,
         "builtin": False,
@@ -270,7 +205,7 @@ def _add_script(scripts: dict) -> None:
 
     _save_custom_scripts(scripts)
     _print_success(f"Script '{name}' registered with key '{key}'.")
-    _print_info(f"Module path: {module_fixed}  →  {func_name}()")
+    _print_info(f"Module path: {module}  →  {func_name}()")
     _print_info("Make sure the module exists and has the entry function.")
 
 
@@ -370,6 +305,7 @@ def _show_system_status() -> None:
         ("apify_client", "Apify Client"),
         ("instaloader", "Instaloader"),
         ("pymupdf", "PyMuPDF"),
+        ("PIL", "Pillow"),
     ]:
         try:
             importlib.import_module(pkg_name)

@@ -11,8 +11,8 @@ Extraction Methods:
   2. Apify API             — cloud-based fallback (requires API key)
 
 Usage:
-  - As a module:  from _99_MISCElLLANEOUS.facebook_web_scraper import run; run()
-  - Standalone:   python -m 99_MISCElLLANEOUS.facebook_web_scraper
+  - As a module:  from scraper.facebook_web_scraper import run; run()
+  - Standalone:   python -m scraper.facebook_web_scraper
 
 Customisation:
   Edit the SCRAPER_CONFIG dict below to change preferences.
@@ -37,58 +37,23 @@ _PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(_PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJECT_ROOT))
 
-from dotenv import load_dotenv
-
-load_dotenv(_PROJECT_ROOT / ".env")
-
-from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 from rich.prompt import Prompt, Confirm
 from rich.progress import Progress, SpinnerColumn, TextColumn
-from rich.theme import Theme
 
-# ---------------------------------------------------------------------------
-# Rich Theme & Console  (matches project style)
-# ---------------------------------------------------------------------------
-CUSTOM_THEME = Theme({
-    "info": "cyan",
-    "success": "bold green",
-    "warning": "bold yellow",
-    "error": "bold red",
-    "title": "bold magenta",
-    "subtitle": "dim white",
-    "highlight": "bold cyan",
-    "muted": "dim",
-    "best": "bold green",
-    "good": "bold yellow",
-    "low": "dim white",
-})
+# Import from shared package (single source of truth)
+from shared.console import (
+    console,
+    print_banner,
+    print_success,
+    print_error,
+    print_warning,
+    print_info,
+)
+from shared.config import get_env
 
-console = Console(theme=CUSTOM_THEME)
-
-
-# ---------------------------------------------------------------------------
-# Styled output helpers  (same API as 01_Downloader/utils.py)
-# ---------------------------------------------------------------------------
-def print_success(msg: str) -> None:
-    console.print(f"  [success][+][/success] {msg}")
-
-def print_error(msg: str) -> None:
-    console.print(f"  [error][!][/error] {msg}")
-
-def print_warning(msg: str) -> None:
-    console.print(f"  [warning][*][/warning] {msg}")
-
-def print_info(msg: str) -> None:
-    console.print(f"  [info][>][/info] {msg}")
-
-def print_banner(title: str, subtitle: str = "") -> None:
-    content = Text(title, style="title", justify="center")
-    if subtitle:
-        content.append(f"\n{subtitle}", style="subtitle")
-    console.print(Panel(content, border_style="bright_magenta", padding=(1, 4)))
 
 
 # ╔═══════════════════════════════════════════════════════════════════════════╗
@@ -164,7 +129,7 @@ SCRAPER_CONFIG = {
 
     # ── Output Settings ───────────────────────────────────────────────────
     "export_json": True,       # Export results to a JSON file?
-    "export_dir": str(_PROJECT_ROOT / "99_MISCElLLANEOUS" / "scraper_output"),
+    "export_dir": str(_PROJECT_ROOT / "output" / "scraper"),
 }
 
 
@@ -1026,7 +991,7 @@ def export_results(posts: list[TuitionPost], config: dict = None) -> Optional[st
     if not config.get("export_json", True):
         return None
 
-    export_dir = Path(config.get("export_dir", _PROJECT_ROOT / "99_MISCElLLANEOUS" / "scraper_output"))
+    export_dir = Path(config.get("export_dir", _PROJECT_ROOT / "output" / "scraper"))
     export_dir.mkdir(parents=True, exist_ok=True)
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
