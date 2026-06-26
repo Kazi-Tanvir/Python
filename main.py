@@ -133,9 +133,16 @@ BUILTIN_SCRIPTS = {
         "builtin": True,
     },
     "cbz_to_pdf": {
-        "name": "CBZ → PDF Converter",
+        "name": "CBZ -> PDF Converter",
         "module": "_03_Converter.cbz_to_pdf",
         "description": "Convert comic book archives (.cbz) to PDF",
+        "entry": "run",
+        "builtin": True,
+    },
+    "img_to_pdf": {
+        "name": "Image -> PDF Converter",
+        "module": "_03_Converter.img_to_pdf",
+        "description": "Convert a directory of images (PNG, JPG, etc.) into a single PDF",
         "entry": "run",
         "builtin": True,
     },
