@@ -71,6 +71,13 @@ BUILTIN_SCRIPTS = {
         "entry": "run",
         "builtin": True,
     },
+    "pdf_splitter": {
+        "name": "PDF Splitter",
+        "module": "pdf_tools.pdf_splitter",
+        "description": "Split PDFs by page range, manual chapters, or auto-detection",
+        "entry": "run",
+        "builtin": True,
+    },
     "fb_scraper": {
         "name": "Facebook Tuition Scraper",
         "module": "scraper.facebook_web_scraper",
