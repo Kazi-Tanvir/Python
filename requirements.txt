@@ -7,3 +7,6 @@ playwright>=1.40
 playwright-stealth>=1.0
 apify-client>=1.5
 Pillow>=10.0
+phonenumbers>=8.13
+requests>=2.31
+beautifulsoup4>=4.12

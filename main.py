@@ -85,6 +85,13 @@ BUILTIN_SCRIPTS = {
         "entry": "run",
         "builtin": True,
     },
+    "osint": {
+        "name": "OSINT Phone Lookup",
+        "module": "osint.main",
+        "description": "Deep reverse phone number intelligence gathering",
+        "entry": "run",
+        "builtin": True,
+    },
 }
 
 
