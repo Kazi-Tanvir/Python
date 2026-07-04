@@ -1,6 +1,6 @@
-# Python Toolkit v1.0.0
+# Python Toolkit v1.1.0
 
-A premium, interactive CLI toolkit for media downloading, PDF generation, ebook parsing, and Facebook scraping. Organized into a clean, modern Python package structure and powered by a polished `rich` terminal interface.
+A premium, interactive CLI toolkit for media downloading, PDF generation, PowerPoint conversion, ebook parsing, and Facebook scraping. Organized into a clean, modern Python package structure and powered by a polished `rich` terminal interface.
 
 ---
 
@@ -18,6 +18,7 @@ A premium, interactive CLI toolkit for media downloading, PDF generation, ebook 
 * **Instagram Downloader**: Story, post, reel, and full profile downloading using `instaloader` with session credentials and rate-limiting.
 * **X (Twitter) Downloader**: Download high-quality videos from X/Twitter posts.
 * **Bulk Download**: Read links from batch files inside `config/` (`yt_links.txt`, `ig_links.txt`, `fb_links.txt`, `x_links.txt`) and download them in parallel.
+* **Individual Link Loop**: When using "Single Video/URL" mode, you can keep entering URLs one after another until you type `0` to go back — no need to re-navigate the menu for every download.
 
 ### 3. 📖 Book to README (`pdf_tools/`)
 * Converts heavy PDF books into chapter-wise structured Markdown folders.
@@ -29,10 +30,14 @@ A premium, interactive CLI toolkit for media downloading, PDF generation, ebook 
 * Parses tutoring posts (class, subjects, location, salary, university preferences) using high-precision regex.
 * Filters posts according to preferences defined in `scraper/facebook_web_scraper.py` and exports matching results to `output/scraper/`.
 
-### 5. 📦 CBZ & Image Converters (`converter/`)
-* **CBZ → PDF**: Compiles Comic Book ZIP (.cbz) archives into high-fidelity PDFs. Uses fitz to stream images efficiently.
-* **Image → PDF**: Converts directories of images (PNG, JPG, BMP, WebP) into a single PDF.
-* Both tools support Tkinter GUIs with native drag-and-drop support (via `tkinterdnd2`) alongside fallback file explorers and standard CLI mode.
+### 5. 📦 Converters Suite (`converter/`)
+* **CBZ → PDF**: Compiles Comic Book ZIP (.cbz) archives into high-fidelity PDFs. Now with a full **CLI mode** alongside the GUI — convert via terminal with Rich progress bars, or use the drag-and-drop Tkinter GUI.
+* **Image → PDF**: Converts directories of images (PNG, JPG, BMP, WebP) into a single PDF. Uses **uniform page width normalization** — all pages are scaled to the widest image's width while preserving aspect ratio. This ensures consistent "fit to screen" reading, especially useful for manga with mixed page dimensions.
+* **PPT → PDF**: Converts PowerPoint (.pptx) presentations into high-fidelity PDF files by rendering each slide as a high-DPI image and stitching them together via PyMuPDF.
+* **PPT → README**: Extracts slide titles, bullet points, tables, images, and speaker notes from PowerPoint files and generates structured Markdown with a table of contents, embedded images, and formatted notes.
+
+### 6. 🔍 OSINT Phone Lookup (`osint/`)
+* Deep reverse phone number intelligence gathering.
 
 ---
 
@@ -60,21 +65,29 @@ python-toolkit/
 │   ├── yt_downloader.py
 │   ├── ig_downloader.py
 │   ├── fb_downloader.py
+│   ├── x_downloader.py
 │   └── FFMPEG_SETUP.md
 │
-├── converter/                 # PDF Converters package
+├── converter/                 # Converters package
 │   ├── __init__.py
-│   ├── main.py                # PDF Converter submenu TUI
-│   ├── cbz_to_pdf.py
-│   └── img_to_pdf.py
+│   ├── main.py                # Converters submenu TUI
+│   ├── cbz_to_pdf.py          # CBZ → PDF (GUI + CLI)
+│   ├── img_to_pdf.py          # Image → PDF (GUI + CLI, uniform width)
+│   ├── ppt_to_pdf.py          # PPT → PDF (CLI)
+│   └── ppt_to_readme.py       # PPT → Markdown README (CLI)
 │
 ├── pdf_tools/                 # PDF Parsing package
 │   ├── __init__.py
-│   └── book_to_readme.py
+│   ├── book_to_readme.py
+│   └── pdf_splitter.py
 │
 ├── scraper/                   # Facebook Scraper package
 │   ├── __init__.py
 │   └── facebook_web_scraper.py
+│
+├── osint/                     # OSINT tools package
+│   ├── __init__.py
+│   └── main.py
 │
 ├── misc/                      # Unrelated utilities folder (empty for future scripts)
 │   └── __init__.py
@@ -128,6 +141,13 @@ This project uses a standard three-digit versioning scheme (`v{MAJOR}.{FEATURES}
 * **FIXES (x.x.1)**: Refers to bug fixes, file updates, and minor adjustments.
 
 ### Version History
+* **v1.1.0** (2026-07-04)
+  * **Image → PDF Uniform Width**: All pages are now normalized to the widest image's width, ensuring consistent "fit to screen" for manga with mixed page dimensions.
+  * **CBZ → PDF CLI Mode**: Added full terminal-based conversion with Rich progress bars alongside the existing GUI.
+  * **Downloader Individual Link Loop**: All downloaders (YouTube, Facebook, Instagram, X) now loop in "Single URL" mode — keep pasting links until you type `0` to go back.
+  * **PPT → PDF Converter**: New tool to render PowerPoint presentations to high-fidelity PDF via slide-to-image rendering.
+  * **PPT → README Converter**: New tool to extract structured Markdown from PowerPoint — titles, bullets, tables, images, and speaker notes.
+  * Added `python-pptx` as a new dependency.
 * **v1.0.0** (2026-06-26)
   * Complete project restructuring: Eliminated digit-prefixed package names.
   * Extracted duplications into a central `shared` package (`shared/console.py` and `shared/config.py`).

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "python-toolkit"
-version = "1.0.0"
+version = "1.1.0"
 description = "A general-purpose CLI script launcher and automation utility suite."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -22,6 +22,7 @@ dependencies = [
     "phonenumbers>=8.13",
     "requests>=2.31",
     "beautifulsoup4>=4.12",
+    "python-pptx>=0.6.21",
 ]
 
 [project.scripts]

@@ -835,19 +835,221 @@ class CbzToPdfApp:
 
 
 # ---------------------------------------------------------------------------
+# CLI / Terminal Mode (Rich TUI)
+# ---------------------------------------------------------------------------
+def run_cli_conversion(cbz_path: Path):
+    """Run CBZ → PDF conversion in terminal mode with rich progress display."""
+    cbz_path = Path(cbz_path).resolve()
+
+    if not cbz_path.exists():
+        print(f"[ERROR] File not found: {cbz_path}")
+        return
+    if cbz_path.suffix.lower() != ".cbz":
+        print(f"[ERROR] Not a CBZ file: {cbz_path}")
+        return
+
+    # Try to import Rich for pretty output
+    try:
+        from rich.console import Console as _RichConsole
+        from rich.panel import Panel as _RichPanel
+        from rich.progress import (
+            Progress as _RichProgress,
+            SpinnerColumn,
+            BarColumn,
+            TextColumn,
+            TimeElapsedColumn,
+        )
+        from rich.theme import Theme as _RichTheme
+
+        _cli_theme = _RichTheme({
+            "info": "cyan",
+            "success": "bold green",
+            "warning": "bold yellow",
+            "error": "bold red",
+        })
+        _cli_console = _RichConsole(theme=_cli_theme)
+        _has_rich = True
+    except ImportError:
+        _has_rich = False
+
+    cbz_size = _human_size(cbz_path.stat().st_size) if cbz_path.exists() else "?"
+    output_pdf = cbz_path.parent / (cbz_path.stem + ".pdf")
+
+    if not _has_rich:
+        print(f"[*] Converting: {cbz_path.name} ({cbz_size})")
+        start = time.time()
+
+        def simple_progress(curr, total):
+            print(f"  [{curr}/{total}] Processing pages...", end="\r")
+
+        try:
+            _convert_cbz_to_pdf(cbz_path, progress_cb=simple_progress)
+            elapsed = time.time() - start
+            print(f"\n[+] PDF generated: {output_pdf.name} ({elapsed:.1f}s)")
+        except Exception as e:
+            print(f"\n[ERROR] Conversion failed: {e}")
+        return
+
+    # Rich version
+    _cli_console.print()
+    _cli_console.print(_RichPanel(
+        f"[bold info]CBZ → PDF Converter[/bold info]\n"
+        f"File: [yellow]{cbz_path.name}[/yellow]  ({cbz_size})",
+        border_style="cyan",
+    ))
+
+    start = time.time()
+
+    with _RichProgress(
+        SpinnerColumn(),
+        TextColumn("[progress.description]{task.description}"),
+        BarColumn(bar_width=40, complete_style="cyan", finished_style="green"),
+        TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
+        TimeElapsedColumn(),
+        console=_cli_console,
+    ) as progress:
+        task = progress.add_task("[cyan]Converting pages...", total=100)
+
+        def rich_progress(curr, total):
+            pct = (curr / total) * 100 if total else 0
+            progress.update(task, completed=pct, description=f"[cyan]Page {curr}/{total}")
+
+        try:
+            _convert_cbz_to_pdf(cbz_path, progress_cb=rich_progress)
+            elapsed = time.time() - start
+            pdf_size = _human_size(output_pdf.stat().st_size) if output_pdf.exists() else "Unknown"
+
+            _cli_console.print()
+            _cli_console.print(_RichPanel(
+                f"[success][+][/success] [bold green]Conversion completed![/bold green]\n\n"
+                f"  • [info]Output PDF:[/] {output_pdf}\n"
+                f"  • [info]Output Size:[/] {pdf_size}\n"
+                f"  • [info]Time Taken:[/] {elapsed:.2f} seconds",
+                border_style="green",
+            ))
+        except KeyboardInterrupt:
+            _cli_console.print("\n  [warning][*][/warning] Conversion interrupted.")
+        except Exception as e:
+            _cli_console.print(f"\n  [error][!][/error] Failed to convert: {e}")
+
+
+# ---------------------------------------------------------------------------
+# Interactive TUI / Launcher Mode
+# ---------------------------------------------------------------------------
+def run_interactive_tui():
+    """Terminal UI prompted launcher for CBZ → PDF."""
+    try:
+        from rich.console import Console as _RichConsole
+        from rich.panel import Panel as _RichPanel
+        from rich.prompt import Prompt as _RichPrompt
+        from rich.theme import Theme as _RichTheme
+
+        _cli_theme = _RichTheme({
+            "info": "cyan",
+            "success": "bold green",
+            "warning": "bold yellow",
+            "error": "bold red",
+        })
+        _cli_console = _RichConsole(theme=_cli_theme)
+        _has_rich = True
+    except ImportError:
+        _has_rich = False
+
+    if not _has_rich:
+        path_str = input("Enter CBZ file/folder path (or press Enter to launch GUI): ").strip()
+        if not path_str:
+            app = CbzToPdfApp()
+            app.mainloop()
+        else:
+            p = Path(path_str)
+            if p.is_file() and p.suffix.lower() == ".cbz":
+                run_cli_conversion(p)
+            elif p.is_dir():
+                cbz_files = _collect_cbz_files(str(p))
+                if not cbz_files:
+                    print("[ERROR] No .cbz files found in directory.")
+                else:
+                    for cbz in cbz_files:
+                        run_cli_conversion(cbz)
+            else:
+                print(f"[ERROR] Invalid path: {path_str}")
+        return
+
+    _cli_console.print(
+        _RichPanel(
+            "[bold info]CBZ → PDF Converter[/bold info]\n\n"
+            "  1. Convert CBZ file via CLI\n"
+            "  2. Convert all CBZ files in a folder (CLI)\n"
+            "  3. Launch graphical GUI (Drag-and-Drop)\n"
+            "  0. Back / Exit",
+            title="[bold]CBZ → PDF[/bold]",
+            border_style="magenta",
+            padding=(1, 3),
+        )
+    )
+
+    choice = _RichPrompt.ask("  Choice", choices=["0", "1", "2", "3"], default="1")
+    if choice == "0":
+        return
+    elif choice == "3":
+        app = CbzToPdfApp()
+        app.mainloop()
+    elif choice == "1":
+        path_str = _RichPrompt.ask("  Enter CBZ file path").strip()
+        if path_str:
+            p = Path(path_str)
+            if p.is_file() and p.suffix.lower() == ".cbz":
+                run_cli_conversion(p)
+            else:
+                _cli_console.print(f"  [error][!][/error] Not a valid CBZ file: '{path_str}'")
+        else:
+            _cli_console.print("  [warning][*][/warning] Empty path, returning.")
+    elif choice == "2":
+        path_str = _RichPrompt.ask("  Enter folder path containing CBZ files").strip()
+        if path_str:
+            p = Path(path_str)
+            if p.is_dir():
+                cbz_files = _collect_cbz_files(str(p))
+                if not cbz_files:
+                    _cli_console.print(f"  [error][!][/error] No .cbz files found in: '{path_str}'")
+                else:
+                    _cli_console.print(f"  [info][>][/info] Found [bold]{len(cbz_files)}[/bold] CBZ file(s).\n")
+                    for cbz in cbz_files:
+                        run_cli_conversion(cbz)
+                        _cli_console.print()
+            else:
+                _cli_console.print(f"  [error][!][/error] Folder not found: '{path_str}'")
+        else:
+            _cli_console.print("  [warning][*][/warning] Empty path, returning.")
+
+
+# ---------------------------------------------------------------------------
 # Entry points
 # ---------------------------------------------------------------------------
 def run():
     """Entry point for the project's Rich-based main.py launcher."""
-    app = CbzToPdfApp()
-    app.mainloop()
+    run_interactive_tui()
 
 
 def main():
-    """Direct CLI entry point."""
-    app = CbzToPdfApp()
-    app.mainloop()
+    """Direct CLI entry point — supports argument or interactive mode."""
+    if len(sys.argv) > 1:
+        path_arg = Path(sys.argv[1])
+        if path_arg.is_file() and path_arg.suffix.lower() == ".cbz":
+            run_cli_conversion(path_arg)
+        elif path_arg.is_dir():
+            cbz_files = _collect_cbz_files(str(path_arg))
+            if cbz_files:
+                for cbz in cbz_files:
+                    run_cli_conversion(cbz)
+            else:
+                print(f"[ERROR] No .cbz files found in: {sys.argv[1]}")
+        else:
+            print(f"[ERROR] Invalid path: {sys.argv[1]}")
+    else:
+        run_interactive_tui()
 
 
 if __name__ == "__main__":
     main()
+

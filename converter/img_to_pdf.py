@@ -165,26 +165,47 @@ def convert_images_to_pdf(
     pdf_doc = fitz.open()
     pages_added = 0
 
+    # --- Pass 1: scan all images to find the maximum width ---
+    # This ensures all pages have uniform width for fit-to-screen reading.
+    max_width = 0.0
+    image_dims: list[tuple[Path, float, float]] = []  # (path, width, height)
+
+    for img_path in images:
+        try:
+            img_doc = fitz.open(str(img_path))
+            rect = img_doc[0].rect
+            img_doc.close()
+            del img_doc
+            image_dims.append((img_path, rect.width, rect.height))
+            if rect.width > max_width:
+                max_width = rect.width
+        except Exception:
+            # Will be skipped in pass 2
+            continue
+
+    if max_width <= 0:
+        raise ValueError(f"All images in '{dir_path.name}' were unreadable.")
+
+    gc.collect()
+
+    # --- Pass 2: build PDF with uniform page width ---
     try:
-        for idx, img_path in enumerate(images):
+        for idx, (img_path, img_w, img_h) in enumerate(image_dims):
             # Check for cancellation
             if cancel_flag and cancel_flag.is_set():
                 pdf_doc.close()
                 raise InterruptedError("Conversion cancelled")
 
-            # Peek image dimensions (MuPDF fast opening)
-            try:
-                img_doc = fitz.open(str(img_path))
-                rect = img_doc[0].rect
-                img_doc.close()
-                del img_doc
-            except Exception:
-                # Skip unreadable images
-                continue
+            # Scale height proportionally to the uniform max width
+            scale = max_width / img_w
+            page_height = img_h * scale
 
-            # Add page of correct size and insert image
-            page = pdf_doc.new_page(width=rect.width, height=rect.height)
-            page.insert_image(rect, filename=str(img_path))
+            # Create page at uniform width
+            page = pdf_doc.new_page(width=max_width, height=page_height)
+
+            # Insert image scaled to fill the full page
+            img_rect = fitz.Rect(0, 0, max_width, page_height)
+            page.insert_image(img_rect, filename=str(img_path))
             pages_added += 1
 
             if progress_cb:

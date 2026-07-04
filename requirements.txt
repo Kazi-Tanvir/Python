@@ -10,3 +10,4 @@ Pillow>=10.0
 phonenumbers>=8.13
 requests>=2.31
 beautifulsoup4>=4.12
+python-pptx>=0.6.21

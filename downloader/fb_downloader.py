@@ -227,7 +227,21 @@ def run() -> None:
         if choice == "0":
             break
         elif choice == "1":
-            run_single_download()
+            console.print()
+            print_info("Enter URLs one by one. Type [bold]0[/bold] to go back.")
+            while True:
+                console.print()
+                url = Prompt.ask("  Enter Facebook video URL (or [bold cyan]0[/bold cyan] to go back)")
+                if url.strip() == "0":
+                    break
+                if not url.strip():
+                    print_error("No URL provided.")
+                    continue
+                download_dir = get_download_dir("facebook")
+                print_info(f"Saving to: {download_dir}")
+                print_info("Downloading at highest quality (HD)...")
+                console.print()
+                _download_single(url, download_dir)
         elif choice == "2":
             run_bulk_download()
 

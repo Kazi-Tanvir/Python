@@ -458,15 +458,21 @@ def run() -> None:
         if choice == "0":
             break
         elif choice == "1":
-            url = Prompt.ask("\n  Enter YouTube URL")
-            if not url.strip():
-                print_error("No URL provided.")
-                continue
-            if _is_playlist(url):
-                print_info("Playlist URL detected.")
-                run_playlist_download_from_url(url)
-            else:
-                run_single_download_from_url(url)
+            console.print()
+            print_info("Enter URLs one by one. Type [bold]0[/bold] to go back.")
+            while True:
+                console.print()
+                url = Prompt.ask("  Enter YouTube URL (or [bold cyan]0[/bold cyan] to go back)")
+                if url.strip() == "0":
+                    break
+                if not url.strip():
+                    print_error("No URL provided.")
+                    continue
+                if _is_playlist(url):
+                    print_info("Playlist URL detected.")
+                    run_playlist_download_from_url(url)
+                else:
+                    run_single_download_from_url(url)
         elif choice == "2":
             run_playlist_download()
         elif choice == "3":
