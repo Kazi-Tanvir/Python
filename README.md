@@ -25,19 +25,32 @@ A premium, interactive CLI toolkit for media downloading, PDF generation, PowerP
 * Parses Table of Contents outlines using `PyMuPDF` (fitz) or falls back to page-chunking.
 * Generates a root `README.md` index acting as the front-matter preface and linking to all chapters.
 
-### 4. 💬 Facebook Tuition Scraper (`scraper/`)
+### 4. ✂️ PDF Splitter (`pdf_tools/`)
+* Splits complex PDF files into smaller documents using three flexible methods:
+  * **Page Range Extraction**: Extract specific page ranges (e.g., 1-10, 15-20) into a single new PDF.
+  * **Manual Chapters**: Interactively define custom chapter page ranges to generate multiple PDFs in a structured folder.
+  * **Auto Chapters**: Automatically parse the PDF's embedded Table of Contents (TOC) using `PyMuPDF` to segment the entire document.
+
+### 5. 💬 Facebook Tuition Scraper (`scraper/`)
 * Scrapes public Facebook tuition/job provider feeds using Playwright and stealth headers.
 * Parses tutoring posts (class, subjects, location, salary, university preferences) using high-precision regex.
 * Filters posts according to preferences defined in `scraper/facebook_web_scraper.py` and exports matching results to `output/scraper/`.
 
-### 5. 📦 Converters Suite (`converter/`)
+### 6. 📦 Converters Suite (`converter/`)
 * **CBZ → PDF**: Compiles Comic Book ZIP (.cbz) archives into high-fidelity PDFs. Now with a full **CLI mode** alongside the GUI — convert via terminal with Rich progress bars, or use the drag-and-drop Tkinter GUI.
 * **Image → PDF**: Converts directories of images (PNG, JPG, BMP, WebP) into a single PDF. Uses **uniform page width normalization** — all pages are scaled to the widest image's width while preserving aspect ratio. This ensures consistent "fit to screen" reading, especially useful for manga with mixed page dimensions.
 * **PPT → PDF**: Converts PowerPoint (.pptx) presentations into high-fidelity PDF files by rendering each slide as a high-DPI image and stitching them together via PyMuPDF.
 * **PPT → README**: Extracts slide titles, bullet points, tables, images, and speaker notes from PowerPoint files and generates structured Markdown with a table of contents, embedded images, and formatted notes.
 
-### 6. 🔍 OSINT Phone Lookup (`osint/`)
-* Deep reverse phone number intelligence gathering.
+### 7. 🔍 OSINT Phone Lookup (`osint/`)
+* Deep reverse phone number intelligence gathering and reconnaissance.
+* Runs multiple intelligence modules in parallel:
+  * **Basic Info & Carrier Details**: Normalizes phone formats (E.164) and retrieves carrier/geographic details.
+  * **Caller ID Check**: Queries public records to resolve registered subscriber names.
+  * **Data Breach Lookup**: Scans leak databases for breaches associated with the number.
+  * **Messaging & Social Media Scan**: Checks profile associations on networks like WhatsApp, Telegram, Signal, and Viber.
+  * **Reputation & Fraud Rating**: Analyzes fraud scores and caller reputation.
+  * **Search Engine Scrapers**: Aggregates public web mentions, social media references, and custom Google searches.
 
 ---
 
@@ -142,12 +155,15 @@ This project uses a standard three-digit versioning scheme (`v{MAJOR}.{FEATURES}
 
 ### Version History
 * **v1.1.0** (2026-07-04)
+  * **New OSINT Phone Lookup Suite**: Reverse phone intelligence gathering with modules for carrier/basic info, caller ID search, data breach analysis, messaging/social media checks, reputation rating, and search engine aggregation.
+  * **New PDF Splitter Tool**: Multi-mode PDF segmenter supporting page range extraction, manual chapter ranges, and auto-chapter splitting via PDF table of contents.
+  * **New X (Twitter) Downloader**: Added support for high-quality video downloading from X/Twitter posts.
+  * **PPT → PDF Converter**: New tool to render PowerPoint presentations to high-fidelity PDF via slide-to-image rendering.
+  * **PPT → README Converter**: New tool to extract structured Markdown from PowerPoint — titles, bullets, tables, images, and speaker notes.
   * **Image → PDF Uniform Width**: All pages are now normalized to the widest image's width, ensuring consistent "fit to screen" for manga with mixed page dimensions.
   * **CBZ → PDF CLI Mode**: Added full terminal-based conversion with Rich progress bars alongside the existing GUI.
   * **Downloader Individual Link Loop**: All downloaders (YouTube, Facebook, Instagram, X) now loop in "Single URL" mode — keep pasting links until you type `0` to go back.
-  * **PPT → PDF Converter**: New tool to render PowerPoint presentations to high-fidelity PDF via slide-to-image rendering.
-  * **PPT → README Converter**: New tool to extract structured Markdown from PowerPoint — titles, bullets, tables, images, and speaker notes.
-  * Added `python-pptx` as a new dependency.
+  * Added `python-pptx`, `phonenumbers`, `requests`, and `beautifulsoup4` dependencies.
 * **v1.0.0** (2026-06-26)
   * Complete project restructuring: Eliminated digit-prefixed package names.
   * Extracted duplications into a central `shared` package (`shared/console.py` and `shared/config.py`).

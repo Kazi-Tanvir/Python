@@ -105,6 +105,6 @@ Tracks structural, architecture, and package-wide updates.
 
 | Date | Version | Category | Description |
 |------|---------|----------|-------------|
-| 2026-07-04 | `v1.1.0` | Feature | Added PPT → PDF and PPT → README converters. Image → PDF now normalizes all pages to uniform width for consistent fit-to-screen reading. CBZ → PDF gained a full CLI mode alongside the GUI. All downloaders (YT, FB, IG, X) now loop in "Single URL" mode until the user types `0`. Added `python-pptx` dependency. |
+| 2026-07-04 | `v1.1.0` | Feature | Added PPT → PDF and PPT → README converters, OSINT phone lookup suite, PDF Splitter, and X video downloader. Image → PDF now normalizes all pages to uniform width. CBZ → PDF gained a full CLI mode. Downloaders loop in Single URL mode. Added `python-pptx`, `phonenumbers`, `requests`, and `beautifulsoup4` dependencies. |
 | 2026-06-26 | `v1.0.0` | Restructure | Eliminated digit-prefixed folder names. Created `shared/` console & config, moved inputs to `config/` and outputs to `output/`. Deleted redundant `downloader.py` entry point. Added `pyproject.toml` and `SYSTEM.md`. |
 | 2025-07-08 | `v0.9.0` | Initial | Initial version with digit-prefixed directories (`01_Downloader`, `03_Converter`, `99_MISCElLLANEOUS`) and duplicate menu entries. |
