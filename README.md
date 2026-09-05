@@ -1,4 +1,4 @@
-# Python Toolkit v1.1.0
+# Python Toolkit v1.2.0
 
 A premium, interactive CLI toolkit for media downloading, PDF generation, PowerPoint conversion, ebook parsing, and Facebook scraping. Organized into a clean, modern Python package structure and powered by a polished `rich` terminal interface.
 
@@ -37,10 +37,13 @@ A premium, interactive CLI toolkit for media downloading, PDF generation, PowerP
 * Filters posts according to preferences defined in `scraper/facebook_web_scraper.py` and exports matching results to `output/scraper/`.
 
 ### 6. 📦 Converters Suite (`converter/`)
+* **ZIP → PDF**: Scans a directory and batch converts every `.zip` archive into an individual `.pdf` file with its matching name (e.g., `archive.zip` → `archive.pdf`). Supports naturally sorted images (PNG, JPG, WebP, etc.), embedded PDF extraction/merging, and paginated text/markdown documents. Features a Rich CLI/TUI with dual progress bars and execution summaries, plus a dark-themed Tkinter GUI with drag-and-drop.
 * **CBZ → PDF**: Compiles Comic Book ZIP (.cbz) archives into high-fidelity PDFs. Now with a full **CLI mode** alongside the GUI — convert via terminal with Rich progress bars, or use the drag-and-drop Tkinter GUI.
 * **Image → PDF**: Converts directories of images (PNG, JPG, BMP, WebP) into a single PDF. Uses **uniform page width normalization** — all pages are scaled to the widest image's width while preserving aspect ratio. This ensures consistent "fit to screen" reading, especially useful for manga with mixed page dimensions.
 * **PPT → PDF**: Converts PowerPoint (.pptx) presentations into high-fidelity PDF files by rendering each slide as a high-DPI image and stitching them together via PyMuPDF.
 * **PPT → README**: Extracts slide titles, bullet points, tables, images, and speaker notes from PowerPoint files and generates structured Markdown with a table of contents, embedded images, and formatted notes.
+* **PPT → ZIP**: Unpacks PowerPoint presentations and exports all embedded images and media into a standalone ZIP archive.
+* **PPT → CBZ**: Converts PowerPoint slides into Comic Book ZIP (.cbz) archives for seamless reading in comic/manga viewers.
 
 ### 7. 🔍 OSINT Phone Lookup (`osint/`)
 * Deep reverse phone number intelligence gathering and reconnaissance.
@@ -84,10 +87,13 @@ python-toolkit/
 ├── converter/                 # Converters package
 │   ├── __init__.py
 │   ├── main.py                # Converters submenu TUI
+│   ├── zip_to_pdf.py          # ZIP → PDF (Batch CLI + GUI)
 │   ├── cbz_to_pdf.py          # CBZ → PDF (GUI + CLI)
 │   ├── img_to_pdf.py          # Image → PDF (GUI + CLI, uniform width)
 │   ├── ppt_to_pdf.py          # PPT → PDF (CLI)
-│   └── ppt_to_readme.py       # PPT → Markdown README (CLI)
+│   ├── ppt_to_readme.py       # PPT → Markdown README (CLI)
+│   ├── ppt_to_zip.py          # PPT → ZIP (CLI)
+│   └── ppt_to_cbz.py          # PPT → CBZ (CLI)
 │
 ├── pdf_tools/                 # PDF Parsing package
 │   ├── __init__.py
@@ -154,6 +160,10 @@ This project uses a standard three-digit versioning scheme (`v{MAJOR}.{FEATURES}
 * **FIXES (x.x.1)**: Refers to bug fixes, file updates, and minor adjustments.
 
 ### Version History
+* **v1.2.0** (2026-09-05)
+  * **New ZIP → PDF Batch Converter**: Scans any directory and converts every `.zip` archive into a corresponding `.pdf` file named after the archive (`archive.zip` → `archive.pdf`). Supports naturally sorted images (PNG, JPG, WebP, TIFF, etc.), embedded PDF merging, and paginated text/markdown documents. Includes isolated streaming temp extraction, garbage collection for 1GB+ files, dual-level Rich progress bars, execution summary tables, and a dark-themed Tkinter GUI with drag-and-drop.
+  * **New PPT → ZIP & PPT → CBZ Converters**: Added utilities to unpack PowerPoint presentations into media ZIP archives and convert slides into Comic Book ZIP (.cbz) formats.
+  * **Windows Terminal UTF-8 Stability**: Configured automatic UTF-8 stream reconfiguring in `shared/console.py` to prevent legacy Windows cp1252 charmap encoding errors.
 * **v1.1.0** (2026-07-04)
   * **New OSINT Phone Lookup Suite**: Reverse phone intelligence gathering with modules for carrier/basic info, caller ID search, data breach analysis, messaging/social media checks, reputation rating, and search engine aggregation.
   * **New PDF Splitter Tool**: Multi-mode PDF segmenter supporting page range extraction, manual chapter ranges, and auto-chapter splitting via PDF table of contents.

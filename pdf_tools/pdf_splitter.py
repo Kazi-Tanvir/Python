@@ -80,6 +80,31 @@ def sanitize_filename(name: str) -> str:
     return name or "untitled"
 
 
+# Windows MAX_PATH is 260; we leave headroom for the drive prefix, etc.
+_MAX_PATH = 250
+
+
+def _clamp_path_length(path: Path) -> Path:
+    """
+    If *path* would exceed _MAX_PATH on Windows, shorten the **stem**
+    (filename without extension) so the full path fits.
+    """
+    full = str(path)
+    if len(full) <= _MAX_PATH:
+        return path
+    overshoot = len(full) - _MAX_PATH
+    stem = path.stem
+    new_stem = stem[: max(10, len(stem) - overshoot - 3)] + "..."
+    return path.with_name(new_stem + path.suffix)
+
+
+def _truncate_slug(slug: str, max_len: int = 100) -> str:
+    """Truncate a slug to *max_len* characters, keeping it readable."""
+    if len(slug) <= max_len:
+        return slug
+    return slug[: max_len - 3].rstrip() + "..."
+
+
 def _open_pdf(pdf_path: Path) -> "fitz.Document | None":
     """Open a PDF and return the document, or None on failure."""
     if fitz is None:
@@ -285,7 +310,7 @@ def _mode_manual_chapters() -> None:
         "  [bold yellow]Book name (used for folder & file naming)[/bold yellow]",
         default=default_book,
     )
-    book_slug = sanitize_filename(book_name)
+    book_slug = _truncate_slug(sanitize_filename(book_name))
 
     # Collect chapter definitions
     chapters: list[dict] = []
@@ -393,7 +418,7 @@ def _mode_manual_chapters() -> None:
 
         for ch in chapters:
             filename = f"{book_slug} - {ch['name']}.pdf"
-            out_path = out_dir / sanitize_filename(filename)
+            out_path = _clamp_path_length(out_dir / sanitize_filename(filename))
             _save_page_range(doc, ch["start"], ch["end"], out_path)
             progress.advance(task_id)
 
@@ -553,7 +578,7 @@ def _mode_auto_chapters() -> None:
         "  [bold yellow]Book name (for folder & file prefix)[/bold yellow]",
         default=default_book,
     )
-    book_slug = sanitize_filename(book_name)
+    book_slug = _truncate_slug(sanitize_filename(book_name))
 
     # Create output folder
     out_dir = OUTPUT_BASE / book_slug
@@ -585,7 +610,7 @@ def _mode_auto_chapters() -> None:
                 suffix = f"Chapter {i:02d} - {ch_title}"
 
             filename = f"{book_slug} - {suffix}.pdf"
-            out_path = out_dir / sanitize_filename(filename)
+            out_path = _clamp_path_length(out_dir / sanitize_filename(filename))
             _save_page_range(doc, ch["start_page"], ch["end_page"], out_path)
             progress.advance(task_id)
 

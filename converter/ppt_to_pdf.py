@@ -113,14 +113,12 @@ def _render_slide_to_image(
     bg = slide.background
     if bg and bg.fill and bg.fill.type is not None:
         try:
-            from pptx.dml.color import RGBColor
-            if bg.fill.fore_color and bg.fill.fore_color.rgb:
-                rgb = bg.fill.fore_color.rgb
-                img.paste(
-                    (rgb[0], rgb[1], rgb[2]),
-                    (0, 0, width_px, height_px),
-                )
-        except Exception:
+            rgb = bg.fill.fore_color.rgb
+            img.paste(
+                (rgb[0], rgb[1], rgb[2]),
+                (0, 0, width_px, height_px),
+            )
+        except (AttributeError, TypeError, ValueError):
             pass
 
     # Try to load a decent font
@@ -193,9 +191,12 @@ def _render_slide_to_image(
                             font = font_small
                     if run.font.bold:
                         is_bold = True
-                    if run.font.color and run.font.color.rgb:
-                        rgb = run.font.color.rgb
-                        fill_color = f"#{rgb}"
+                    try:
+                        if run.font.color and run.font.color.type is not None:
+                            rgb = run.font.color.rgb
+                            fill_color = f"#{rgb}"
+                    except (AttributeError, TypeError, ValueError):
+                        pass
 
                 draw.text(
                     (left_px + 5, text_y),
@@ -394,6 +395,109 @@ def run_cli_conversion(pptx_path: Path):
 
 
 # ---------------------------------------------------------------------------
+# Directory Batch Conversion
+# ---------------------------------------------------------------------------
+def run_directory_conversion(directory: Path) -> None:
+    """
+    Scan a directory for all .pptx files and convert each to PDF.
+
+    Produces a summary table at the end showing results for every file.
+    """
+    from rich.table import Table
+
+    directory = Path(directory).resolve()
+    if not directory.is_dir():
+        print_error(f"Not a valid directory: {directory}")
+        return
+
+    pptx_files = sorted(directory.glob("*.pptx"))
+    if not pptx_files:
+        print_warning(f"No .pptx files found in: {directory}")
+        return
+
+    print_info(f"Found [bold]{len(pptx_files)}[/bold] PPTX file(s) in: {directory}")
+    console.print()
+
+    results = []  # list of (filename, status, detail)
+    overall_start = time.time()
+
+    for i, pptx_path in enumerate(pptx_files, 1):
+        file_size = _human_size(pptx_path.stat().st_size)
+        output_pdf = pptx_path.parent / f"{pptx_path.stem}.pdf"
+        console.rule(
+            f"[cyan]{i}/{len(pptx_files)}[/cyan]  {pptx_path.name}  ({file_size})",
+            style="dim",
+        )
+
+        start = time.time()
+
+        with Progress(
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}"),
+            BarColumn(bar_width=40, complete_style="cyan", finished_style="green"),
+            TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
+            TimeElapsedColumn(),
+            console=console,
+        ) as progress:
+            task = progress.add_task("[cyan]Rendering slides...", total=100)
+
+            def rich_progress(curr, total, _task=task, _progress=progress):
+                pct = (curr / total) * 100 if total else 0
+                _progress.update(
+                    _task,
+                    completed=pct,
+                    description=f"[cyan]Slide {curr}/{total}",
+                )
+
+            try:
+                result_path = convert_pptx_to_pdf(
+                    pptx_path, output_pdf, progress_cb=rich_progress
+                )
+                elapsed = time.time() - start
+                pdf_size = _human_size(result_path.stat().st_size)
+                results.append((pptx_path.name, "✓ Success", f"{pdf_size} in {elapsed:.1f}s"))
+                print_success(f"{pptx_path.name} → {result_path.name}")
+            except KeyboardInterrupt:
+                results.append((pptx_path.name, "⚠ Interrupted", "User cancelled"))
+                print_warning("Batch interrupted by user.")
+                break
+            except Exception as e:
+                results.append((pptx_path.name, "✗ Failed", str(e)[:60]))
+                print_error(f"Failed: {pptx_path.name} — {e}")
+
+        console.print()
+
+    # Summary table
+    overall_elapsed = time.time() - overall_start
+    table = Table(
+        title=f"Batch Conversion Summary  ({overall_elapsed:.1f}s total)",
+        border_style="bright_cyan",
+        show_lines=True,
+    )
+    table.add_column("#", style="dim", width=4)
+    table.add_column("File", style="bold white")
+    table.add_column("Status", justify="center")
+    table.add_column("Details", style="dim")
+
+    for idx, (fname, status, detail) in enumerate(results, 1):
+        status_style = (
+            "[green]" if "Success" in status
+            else "[yellow]" if "Interrupted" in status
+            else "[red]"
+        )
+        table.add_row(str(idx), fname, f"{status_style}{status}", detail)
+
+    console.print()
+    console.print(table)
+    console.print()
+
+    success_count = sum(1 for _, s, _ in results if "Success" in s)
+    print_info(
+        f"Converted [bold]{success_count}[/bold] / {len(pptx_files)} file(s) successfully."
+    )
+
+
+# ---------------------------------------------------------------------------
 # Interactive TUI
 # ---------------------------------------------------------------------------
 def run_interactive_tui():
@@ -401,7 +505,8 @@ def run_interactive_tui():
     console.print(
         Panel(
             "[bold info]PPT → PDF Converter[/bold info]\n\n"
-            "  1. Convert a PPTX file to PDF\n"
+            "  1. Convert a single PPTX file to PDF\n"
+            "  2. Batch convert all PPTX in a directory\n"
             "  0. Back / Exit",
             title="[bold]PPT → PDF[/bold]",
             border_style="magenta",
@@ -409,7 +514,7 @@ def run_interactive_tui():
         )
     )
 
-    choice = Prompt.ask("  Choice", choices=["0", "1"], default="1")
+    choice = Prompt.ask("  Choice", choices=["0", "1", "2"], default="1")
     if choice == "0":
         return
     elif choice == "1":
@@ -420,6 +525,16 @@ def run_interactive_tui():
                 run_cli_conversion(p)
             else:
                 print_error(f"Not a valid PPTX file: '{path_str}'")
+        else:
+            print_warning("Empty path, returning.")
+    elif choice == "2":
+        dir_str = Prompt.ask("  Enter directory path containing PPTX files").strip()
+        if dir_str:
+            d = Path(dir_str)
+            if d.is_dir():
+                run_directory_conversion(d)
+            else:
+                print_error(f"Not a valid directory: '{dir_str}'")
         else:
             print_warning("Empty path, returning.")
 
@@ -438,8 +553,10 @@ def main():
         path_arg = Path(sys.argv[1])
         if path_arg.is_file() and path_arg.suffix.lower() == ".pptx":
             run_cli_conversion(path_arg)
+        elif path_arg.is_dir():
+            run_directory_conversion(path_arg)
         else:
-            print(f"[ERROR] Not a valid PPTX file: {sys.argv[1]}")
+            print(f"[ERROR] Not a valid PPTX file or directory: {sys.argv[1]}")
     else:
         run_interactive_tui()
 

@@ -1,6 +1,7 @@
 """
 PDF & PPT Converters Submenu
-Centralized entry point for CBZ → PDF, Image → PDF, PPT → PDF, and PPT → README converters.
+Centralized entry point for CBZ → PDF, Image → PDF, PPT → PDF, PPT → README,
+PPT → ZIP, and PPT → CBZ converters.
 """
 
 from shared.console import (
@@ -15,6 +16,9 @@ import converter.cbz_to_pdf as cbz_conv
 import converter.img_to_pdf as img_conv
 import converter.ppt_to_pdf as ppt_pdf_conv
 import converter.ppt_to_readme as ppt_readme_conv
+import converter.ppt_to_zip as ppt_zip_conv
+import converter.ppt_to_cbz as ppt_cbz_conv
+import converter.zip_to_pdf as zip_conv
 
 from rich.panel import Panel
 from rich.text import Text
@@ -26,7 +30,7 @@ def run() -> None:
     banner_text = Text(justify="center")
     banner_text.append("CONVERTERS", style="bold bright_magenta")
     banner_text.append("\n")
-    banner_text.append("v1.1.0", style="dim")
+    banner_text.append("v1.2.0", style="dim")
     console.print(
         Panel(
             banner_text,
@@ -43,6 +47,9 @@ def run() -> None:
                 "[bold cyan]2[/]  Image → PDF Converter\n"
                 "[bold cyan]3[/]  PPT → PDF Converter\n"
                 "[bold cyan]4[/]  PPT → README Converter\n"
+                "[bold cyan]5[/]  PPT → ZIP Converter\n"
+                "[bold cyan]6[/]  PPT → CBZ Converter\n"
+                "[bold cyan]7[/]  ZIP → PDF Converter\n"
                 "[bold cyan]0[/]  Back to Main Menu",
                 title="[bold]Converters Menu[/bold]",
                 border_style="bright_magenta",
@@ -50,7 +57,7 @@ def run() -> None:
             )
         )
 
-        choice = Prompt.ask("  Choice", choices=["0", "1", "2", "3", "4"], default="1")
+        choice = Prompt.ask("  Choice", choices=["0", "1", "2", "3", "4", "5", "6", "7"], default="1")
 
         if choice == "0":
             console.print()
@@ -64,6 +71,12 @@ def run() -> None:
             ppt_pdf_conv.run()
         elif choice == "4":
             ppt_readme_conv.run()
+        elif choice == "5":
+            ppt_zip_conv.run()
+        elif choice == "6":
+            ppt_cbz_conv.run()
+        elif choice == "7":
+            zip_conv.run()
 
 
 def main() -> None:
@@ -73,3 +86,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     run()
+

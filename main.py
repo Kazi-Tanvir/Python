@@ -1,5 +1,5 @@
 """
-Python Toolkit v1.1.0
+Python Toolkit v1.2.0
 ===================
 General-purpose script launcher for the 98_PYTHON project.
 Provides a Rich-based interactive menu that can call any script
@@ -88,7 +88,7 @@ BUILTIN_SCRIPTS = {
     "converter": {
         "name": "PDF Converter",
         "module": "converter.main",
-        "description": "Convert CBZ, images, or PPT into PDF / Markdown",
+        "description": "Convert ZIP, CBZ, images, or PPT into PDF / Markdown",
         "entry": "run",
         "builtin": True,
     },

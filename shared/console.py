@@ -3,6 +3,18 @@ Shared Rich console, theme, and styled output helpers.
 Single source of truth for the project's terminal UI.
 """
 
+import sys
+
+# Ensure UTF-8 output on Windows consoles to prevent cp1252 charmap encode errors
+if sys.platform == "win32":
+    try:
+        if hasattr(sys.stdout, "reconfigure"):
+            sys.stdout.reconfigure(encoding="utf-8")
+        if hasattr(sys.stderr, "reconfigure"):
+            sys.stderr.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
+
 from rich.console import Console
 from rich.panel import Panel
 from rich.text import Text
